@@ -3,8 +3,8 @@ import express from 'express'
 import 'dotenv/config'; // configuración de dotenv
 
 // // importaciones personalizadas 
-// import routes from './Routes/routes';
-// import { handleErrorMiddleware } from './Middlewares/HandleErrosMiddleware';
+import routes from './Routes/routes';
+import { handleErrorMiddleware } from './Middlewares/HandleErrosMiddleware';
 
 // Inicializacion de express
 const API_APP = express();
@@ -13,7 +13,11 @@ const API_APP = express();
 API_APP.use(express.urlencoded({ extended: true })); // Aceptar Cadenas o arreglos
 API_APP.use(express.json()); // Entender datos en Formato JSON
 
-// Rutas de la API (PROXIMO)
+// Rutas de la API
+API_APP.use('/', routes);
+
+// Medio para manejar los errores 
+API_APP.use(handleErrorMiddleware);
 
 // Toma de las variables del archivo env (desestructuracion)
 const { PORT_SERVER, URL } = process.env;
