@@ -1,4 +1,5 @@
 // ARCHIVO PARA LAS FUNCIONALIDADES DE LA INVOCACION EN LA RUTA
+// ESTE CODIGO FUE PROPORCIONADO POR https://github.com/JoshuaEGonzalezRuiz
 import 'dotenv/config'; // configuración de dotenv
 import crypto from 'crypto';
 
