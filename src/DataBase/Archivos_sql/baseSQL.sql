@@ -91,3 +91,7 @@ CREATE TABLE IF NOT EXISTS Carrito (
 );
 
 -- DROP DATABASE eLimitedToys_bd;
+
+-- SELECT * FROM Usuarios;
+
+-- SELECT * FROM Direccion;
