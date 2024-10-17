@@ -8,7 +8,8 @@ CREATE PROCEDURE Agregar_nuevo_producto(
     IN p_precio_producto DECIMAL(10, 2),
     IN p_precio_envio DECIMAL(10, 2),
     IN p_existencia INT,
-	IN p_prod_imgs LONGTEXT
+	IN p_prod_imgs LONGTEXT,
+    OUT mensaje VARCHAR(255)
 )
 BEGIN
     -- Variables del procedimiento
@@ -48,6 +49,7 @@ BEGIN
         SET p_prod_imgs = SUBSTRING(p_prod_imgs, LENGTH(imagen) + 2); -- Eliminar la imagen insertada de la cadena
     END WHILE;
 
+    SET mensaje = 'El producto se ha creado';
 END //
 
 DELIMITER ;
@@ -63,7 +65,10 @@ CALL Agregar_nuevo_producto(
     100.00,        -- Precio del producto
     10.00,         -- Precio de envío
     50,             -- Existencia
-	'dataIMG1.jpg,dataIMG2.jpg,dataIMG3.jpg,dataIMG4.jpg,dataIMG5.jpg' -- Conjunto de imagenes separada por ','
+	'dataIMG1.jpg,dataIMG2.jpg,dataIMG3.jpg,dataIMG4.jpg,dataIMG5.jpg', -- Conjunto de imagenes separada por ','
+    @mensaje -- mensaje de confirmacion
 );
 
+-- Ver el mensaje de salida
+SELECT @mensaje;
 */
