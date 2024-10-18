@@ -8,6 +8,6 @@ export interface Respuesta {
 }
 
 
-export interface RespuestaConDatos extends Respuesta{
+export interface RespuestaConDatos extends Respuesta {
     data: JsonData
 }
