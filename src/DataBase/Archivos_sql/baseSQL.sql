@@ -54,7 +54,8 @@ CREATE TABLE IF NOT EXISTS Productos (
 	id_producto INT PRIMARY KEY AUTO_INCREMENT,
     nombre VARCHAR(255) NOT NULL,
     marca VARCHAR(255) NOT NULL,
-    descripcion VARCHAR(255) NOT NULL
+    descripcion VARCHAR(255) NOT NULL,
+    is_product_paused BOOLEAN DEFAULT FALSE,
 );
 
 CREATE TABLE IF NOT EXISTS Imagenes_productos (
