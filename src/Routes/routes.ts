@@ -5,7 +5,8 @@ const Router = express.Router();
 // Importaciones propias
 import StatusServer from './Status_Server'; // Saber el estado del server 
 import Productos from './Products_route';
-// import ShoppingCart from './';
+import Usuarios from './User_route';
+import ShoppingCart from './Carrito_route';
 
 // Rutas especificas
 
@@ -14,9 +15,9 @@ Router.use('/status-server', StatusServer);
 
 // Productos
 Router.use('/productos', Productos);
-// Router.use('/carrito-de-compras', );
+Router.use('/carrito', ShoppingCart);
 // // Router.use('/proceso-de-compra', );
-// Router.use('/usuarios', );
+Router.use('/usuarios', Usuarios);
 
 
 export default Router;
