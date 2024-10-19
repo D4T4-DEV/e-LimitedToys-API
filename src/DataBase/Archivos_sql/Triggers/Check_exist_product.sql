@@ -25,4 +25,7 @@ DELIMITER ;
     el producto ya no se tenga una existencia y por ende se etiquete que 
     el producto esta pausado, el estado pausado es que no se tienen unidades,
     pero posiblemente se puedan en un futuro volver a la venta.
+    
+    -- PRUEBAS
+    UPDATE inventario SET existencia = 0 WHERE id_producto = 1;
 */
