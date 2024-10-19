@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS Usuarios (
     email VARCHAR(255) NOT NULL,
     psw_hash VARCHAR(255) NOT NULL,
     nick VARCHAR(255) NOT NULL,
+    is_account_paused BOOLEAN DEFAULT FALSE,
     prof_pic LONGTEXT
 );
 
