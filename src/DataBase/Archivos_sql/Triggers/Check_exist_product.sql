@@ -1,3 +1,5 @@
+DELIMITER //
+
 CREATE TRIGGER checar_existencias_productos_inventario
 AFTER  UPDATE ON Inventario
 FOR EACH ROW
@@ -12,7 +14,10 @@ BEGIN
         SET is_product_paused = FALSE
         WHERE id_producto = NEW.id_producto;
     END IF;
-END;
+
+END //
+
+DELIMITER ;
 
 /*
     Este trigger se activa antes de cada modificacion
