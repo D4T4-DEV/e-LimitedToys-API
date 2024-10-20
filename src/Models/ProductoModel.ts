@@ -82,3 +82,18 @@ export const EliminarProducto = async (data: DataProduct): Promise<Respuesta> =>
         (await conn_MYSQL).release();
     }
 }
+
+export const ObtenerProductos = async (data: string): Promise<Respuesta> => {
+
+    const conn_MYSQL = getConnectionMySQL();
+
+    try {
+        return { status: 200, message: `Se ha devuelto los 15 productos del indice ${data}`, data: {}};
+    } catch (error) {
+        const customError = new Error(`ObtenerProductos() modelo ${error}`);
+        (customError as any).statusCode = 500;
+        throw customError;
+    } finally {
+        (await conn_MYSQL).release();
+    }
+}

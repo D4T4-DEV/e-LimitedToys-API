@@ -37,3 +37,15 @@ export const EliminarProducto = async (req: Request, res: Response, next: NextFu
         next(error);
     }
 }
+
+export const ObtenerProductos = async (req: Request, res: Response, next: NextFunction) => {
+    const { indice_producto } = req.params;
+
+    try {
+        const resultadoOperacion: Respuesta = await Servicios.ObtenerProductos(indice_producto);
+        res.status(resultadoOperacion.status).json(resultadoOperacion)
+    } catch (error) {
+        // Pasamos el error al middleware de errores
+        next(error);
+    }
+}

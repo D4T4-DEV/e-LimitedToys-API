@@ -25,3 +25,11 @@ export const EliminarProducto = async (data: DataProduct): Promise<Respuesta> =>
         throw err;
     }
 }
+
+export const ObtenerProductos = async (data: string): Promise<Respuesta> => {
+    try {
+        return Models.ObtenerProductos(data);
+    } catch (err) {
+        throw err;
+    }
+}
