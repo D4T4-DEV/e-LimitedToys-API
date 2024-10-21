@@ -11,7 +11,7 @@ BEGIN
     FROM Usuarios
     WHERE id_usuario = i_id_user;
 
-    IF v_id_usuario IS NULL THEN
+    IF v_id_usuario IS NOT NULL THEN
 
         UPDATE Usuarios SET
         is_account_paused = TRUE
