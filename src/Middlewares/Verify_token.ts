@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import 'dotenv/config'; // configuración de dotenv
 import { Respuesta } from '../Interfaces/ResponseInterface';
+import { RequestPersonalizado } from '../Interfaces/Request/personalizateRequestUser';
 
 const { RSA_PRIVATE_KEY } = process.env;
 
@@ -20,19 +21,16 @@ export function verifyTokenMiddleware(req: RequestPersonalizado, res: Response, 
 
     // Separamos los componentes de la cadena, siendo representado por un espacio ' '
     const token = authHeader.split(' ');
-    jwt.verify(token[1], RSA_PRIVATE_KEY as string, { algorithms: ['RS256'] }, (err, usuario) => {
+    jwt.verify(token[0], RSA_PRIVATE_KEY as string, { algorithms: ['RS256'] }, (err, decoded: any) => {
         if (err) {
             res.status(ResponseTokenInvalid.status).json(ResponseTokenInvalid);
             return;
         }
-        req.usuario = usuario;
+
+        req.usuario = decoded;
+        req.usuarioId = decoded.id;
         next();
     });
-}
-
-// Interfaz para poder hacer un request personalizado
-interface RequestPersonalizado extends Request{
-    usuario?: string | JwtPayload;
 }
 
 // JwtPayload referencia a un interfaz con los datos que representan al token. Al entrar a la interfaz para conocer sus componentes
