@@ -8,6 +8,6 @@ router.post('/new', proccessDecryptDataMiddleware, Controllers.AniadirProducto);
 router.put('/edit', proccessDecryptDataMiddleware, Controllers.EditarProducto);
 router.delete('/delete', proccessDecryptDataMiddleware, Controllers.EliminarProducto);
 
-router.get('/get',  Controllers.ObtenerProductos)
+router.get('/get/:indice_producto',  Controllers.ObtenerProductos)
 
 export default router;
