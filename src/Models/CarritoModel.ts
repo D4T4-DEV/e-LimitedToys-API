@@ -71,10 +71,24 @@ export const EliminarProductoCarrito = async (data: DataCarrito): Promise<Respue
 
 export const ObtenerCarrito = async (userID: string): Promise<Respuesta> => {
 
-    const conn_MYSQL = getConnectionMySQL();
+    const conn_MYSQL = await getConnectionMySQL();
 
     try {
-        return { status: 200, message: 'Devolvi el carrito', data: {a: 'a'}};
+        const [result]: any[] = await conn_MYSQL.query(`CALL ObtenerCarrito( ?, @mensaje)`, [userID]);
+
+        const [mensajeResult]: any[] = await conn_MYSQL.query(`
+            SELECT @mensaje AS mensaje;
+        `);
+
+        const mensaje = mensajeResult[0]?.mensaje;
+
+        if (mensaje === 'El usuario no tiene carrito') {
+            return { status: 404, message: 'No se encontro un carrito con el Id del usuario proporcionado' };
+        } else {
+            const queryResult = result[0];
+            return { status: 200, message: `Devolvi el carrito`, data: {queryResult}};
+        }
+
     } catch (error) {
         const customError = new Error(`ObtenerCarrito() modelo ${error}`);
         (customError as any).statusCode = 500;
