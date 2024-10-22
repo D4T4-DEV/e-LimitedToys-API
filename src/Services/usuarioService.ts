@@ -18,9 +18,9 @@ export const IniciarSesion = async (data: any): Promise<Respuesta> => {
     }
 }
 
-export const EditarUsuario = async (data: any): Promise<Respuesta> => {
+export const EditarDireccion = async (data: any): Promise<Respuesta> => {
     try {
-        return Models.EditarUsuario(data);
+        return Models.EditarDireccion(data);
     } catch (err) {
         throw err;
     }

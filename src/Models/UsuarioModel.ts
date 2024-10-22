@@ -135,7 +135,7 @@ export const IniciarSesion = async (data: UserData): Promise<Respuesta> => {
     }
 }
 
-export const EditarUsuario = async (data: UserData): Promise<Respuesta> => {
+export const EditarDireccion = async (data: UserData): Promise<Respuesta> => {
 
     // Obtencion de las variables de la interfaz
     const {

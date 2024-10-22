@@ -27,18 +27,6 @@ export const IniciarSesion = async (req: Request, res: Response, next: NextFunct
     }
 }
 
-export const EditarUsuario = async (req: Request, res: Response, next: NextFunction) => {
-    const { datos } = req.body;
-
-    try {
-        const resultadoOperacion: Respuesta = await Servicios.EditarUsuario(datos);
-        res.status(resultadoOperacion.status).json(resultadoOperacion)
-    } catch (error) {
-        // Pasamos el error al middleware de errores
-        next(error);
-    }
-}
-
 export const EliminarUsuario = async (req: RequestPersonalizado, res: Response, next: NextFunction) => {
     const { user_ID } = req.params;
     const idToken = req.usuarioId;
@@ -49,6 +37,24 @@ export const EliminarUsuario = async (req: RequestPersonalizado, res: Response, 
 
     try {
         const resultadoOperacion: Respuesta = await Servicios.EliminarUsuario({ user_ID: user_ID });
+        res.status(resultadoOperacion.status).json(resultadoOperacion)
+    } catch (error) {
+        // Pasamos el error al middleware de errores
+        next(error);
+    }
+}
+
+export const EditarDireccion = async (req: RequestPersonalizado, res: Response, next: NextFunction) => {
+    const { datos } = req.body;
+
+    const idToken = req.usuarioId;
+
+    if (datos.user_ID != idToken) {
+        res.status(401).json({ status: 401, message: 'Operacion no valida para este usuario' })
+    }
+
+    try {
+        const resultadoOperacion: Respuesta = await Servicios.EditarDireccion(datos);
         res.status(resultadoOperacion.status).json(resultadoOperacion)
     } catch (error) {
         // Pasamos el error al middleware de errores
