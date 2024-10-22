@@ -195,3 +195,30 @@ export const EliminarUsuario = async (data: UserData): Promise<Respuesta> => {
         conn_MYSQL.release();
     }
 }
+
+export const ObtenerDatosUsuario = async (data: UserData): Promise<Respuesta> => {
+    // Obtencion de las variables de la interfaz
+    const { user_ID } = data;
+
+    const conn_MYSQL = await getConnectionMySQL();
+
+    try {
+
+        const [result]: any = await conn_MYSQL.query(`CALL ObtenerDatosUsuario( ? )`, [user_ID]);
+
+        // Tomamos lo que viene de la consulta, o bien asignamos un arreglo vacio
+        const userData = result[0] || [];
+
+        if (userData.length > 0) {
+            return { status: 200, message: 'Devolviendo datos', data: {userData} };
+        }
+        return { status: 404, message: 'El usuario dado, no existe' };
+
+    } catch (error) {
+        const customError = new Error(`ObtenerDatosUsuario() modelo ${error}`);
+        (customError as any).statusCode = 500;
+        throw customError;
+    } finally {
+        conn_MYSQL.release();
+    }
+}

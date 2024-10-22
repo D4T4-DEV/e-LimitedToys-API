@@ -33,3 +33,11 @@ export const EliminarUsuario = async (data: UserData): Promise<Respuesta> => {
         throw err;
     }
 }
+
+export const ObtenerDatosUsuario = async (data: UserData): Promise<Respuesta> => {
+    try {
+        return Models.ObtenerDatosUsuario(data);
+    } catch (err) {
+        throw err;
+    }
+}
