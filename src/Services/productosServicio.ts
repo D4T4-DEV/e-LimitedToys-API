@@ -33,3 +33,11 @@ export const ObtenerProductos = async (data: string): Promise<Respuesta> => {
         throw err;
     }
 }
+
+export const ObtenerProductosBuscador = async (lista: string, filter: string): Promise<Respuesta> => {
+    try {
+        return Models.ObtenerProductosBuscador(lista, filter);
+    } catch (err) {
+        throw err;
+    }
+}

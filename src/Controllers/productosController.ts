@@ -49,3 +49,15 @@ export const ObtenerProductos = async (req: Request, res: Response, next: NextFu
         next(error);
     }
 }
+
+export const ObtenerProductosBuscador = async (req: Request, res: Response, next: NextFunction) => {
+    const { indice, filter } = req.params;
+
+    try {
+        const resultadoOperacion: Respuesta = await Servicios.ObtenerProductosBuscador(indice, filter);
+        res.status(resultadoOperacion.status).json(resultadoOperacion)
+    } catch (error) {
+        // Pasamos el error al middleware de errores
+        next(error);
+    }
+}
