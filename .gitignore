@@ -131,3 +131,6 @@ dist
 
 # Carpeta de compilado de TS a JS
 build/
+
+# Carpeta de imagenes 
+uploads/
