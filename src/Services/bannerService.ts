@@ -9,3 +9,11 @@ export const ObtenerBanners = async (): Promise<Respuesta> => {
         throw err;
     }
 }
+
+export const SubirBanner = async (ruta: string): Promise<Respuesta> => {
+    try {
+        return Models.SubirBanner(ruta);
+    } catch (err) {
+        throw err;
+    }
+}

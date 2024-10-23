@@ -26,3 +26,18 @@ export const ObtenerBanners = async (): Promise<Respuesta> => {
         conn_MYSQL.release();
     }
 }
+
+export const SubirBanner = async (ruta: string): Promise<Respuesta> => {
+    const conn_MYSQL = await getConnectionMySQL();
+
+    try {
+        const [result]: [Banner[], any] = await conn_MYSQL.query(`INSERT INTO banners (banner_img) VALUES (?)`, [ruta]);
+        return { status: 200, message: 'Se subio la imagen' };
+    } catch (error) {
+        const customError = new Error(`ObtenerBanners() modelo ${error}`);
+        (customError as any).statusCode = 500;
+        throw customError;
+    } finally {
+        conn_MYSQL.release();
+    }
+}
