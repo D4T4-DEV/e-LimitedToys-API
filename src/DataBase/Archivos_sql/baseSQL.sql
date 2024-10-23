@@ -65,6 +65,11 @@ CREATE TABLE IF NOT EXISTS Imagenes_productos (
     FOREIGN KEY (id_producto) REFERENCES Productos(id_producto)
 );
 
+CREATE TABLE IF NOT EXISTS Banners (
+	id_banner_img INT PRIMARY KEY AUTO_INCREMENT,
+    banner_img LONGTEXT NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS Inventario (
 	id_inv INT PRIMARY KEY AUTO_INCREMENT,
     id_producto INT,

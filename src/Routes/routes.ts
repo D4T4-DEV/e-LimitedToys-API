@@ -7,6 +7,7 @@ import StatusServer from './Status_Server'; // Saber el estado del server
 import Productos from './Products_route';
 import Usuarios from './User_route';
 import ShoppingCart from './Carrito_route';
+import Banners from './Banner_route';
 
 // Rutas especificas
 
@@ -15,6 +16,7 @@ Router.use('/status-server', StatusServer);
 
 // Productos
 Router.use('/productos', Productos);
+Router.use('/banner', Banners);
 Router.use('/carrito', ShoppingCart);
 // // Router.use('/proceso-de-compra', );
 Router.use('/usuarios', Usuarios);
