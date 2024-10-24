@@ -1,19 +1,18 @@
 import { Request, Response, NextFunction } from 'express';
-import { Respuesta } from '../Interfaces/ResponseInterface';
 import path from 'path';
 import { verifyTokenMiddleware } from './Verify_token';
 
-// Respuestas predeterminadas
-const responseNoData: Respuesta = { status: 401, message: 'No puedes acceder a esta ruta' };
+// Toma de las variables del archivo env (desestructuracion)
+const { DIR_UPLOAD } = process.env;
 
 export function checkFileAccessMiddlware(req: Request, res: Response, next: NextFunction) {
 
     // Normaliza la ruta para verse -> ./algo/algoOtro/
-    const requestedFile = path.normalize(path.join(__dirname, '../../uploads', req.path));
+    const requestedFile = path.normalize(path.join(__dirname, `../../${DIR_UPLOAD}`, req.path));
 
     // Lista de directorios permitidos
     const allowedDirectories = [
-        path.normalize(path.join(__dirname, '../../uploads/Public')),
+        path.normalize(path.join(__dirname, `../../${DIR_UPLOAD}/Public`)),
     ];
 
     // Verificar si el archivo solicitado es publico o no

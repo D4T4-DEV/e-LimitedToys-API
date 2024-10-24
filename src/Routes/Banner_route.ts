@@ -11,4 +11,7 @@ router.get('/get', Controllers.ObtenerBanners);
                       //upload.single('imagen') -> Uso de multer como middlware que espera una key 'imagen'
 router.post('/upload', upload.single('imagen'), Controllers.SubirBanner);
 
+router.delete('/delete/:id_banner/:nameImagen', Controllers.BorrarBanner);
+
+
 export default router;

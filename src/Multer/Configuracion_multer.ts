@@ -4,6 +4,8 @@ import fs from 'fs';
 import { Request } from 'express';
 import { v4 as uuidv4 } from 'uuid';
 
+const { DIR_UPLOAD } = process.env;
+
 // Filtro aplicado para operar antes de guardar o realizar acciones
 const fileFilter = (req: Request, file: Express.Multer.File, cb: FileFilterCallback) => {
 
@@ -26,7 +28,7 @@ const storage = multer.diskStorage({
     destination: (req, _file, cb) => {
         // Obtencion de la subcarpeta por el body
         const subcarpeta = req.body.subfolder || 'default';
-        const uploadPath = path.join('uploads', subcarpeta); // Directorio en donde se guardara uploads/${subcarpeta}
+        const uploadPath = path.join(DIR_UPLOAD!, subcarpeta); // Directorio en donde se guardara uploads/${subcarpeta}
 
         // Si no existe el directorio lo crea (evita problemas de inexistencia de directorios)
         fs.mkdirSync(uploadPath, { recursive: true });
