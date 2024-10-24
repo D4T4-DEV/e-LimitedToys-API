@@ -210,12 +210,35 @@ export const ObtenerDatosUsuario = async (data: UserData): Promise<Respuesta> =>
         const userData = result[0] || [];
 
         if (userData.length > 0) {
-            return { status: 200, message: 'Devolviendo datos', data: {userData} };
+            return { status: 200, message: 'Devolviendo datos', data: { userData } };
         }
         return { status: 404, message: 'El usuario dado, no existe' };
 
     } catch (error) {
         const customError = new Error(`ObtenerDatosUsuario() modelo ${error}`);
+        (customError as any).statusCode = 500;
+        throw customError;
+    } finally {
+        conn_MYSQL.release();
+    }
+}
+
+export const ObtenerImgUsuario = async (user_ID: string): Promise<string | undefined> => {
+    const conn_MYSQL = await getConnectionMySQL();
+
+    try {
+        const [result]: any = await conn_MYSQL.query(`SELECT prof_pic FROM usuarios WHERE id_usuario = ?`, [user_ID]);
+
+        // Verificamos si la respuesta no esta vacia y contenga el campo esperado
+        if (result.length > 0 && result[0].prof_pic) {
+            return result[0].prof_pic;
+        }
+
+        // Si no hay resultado dada la condicion, o no se tiene el campo esperado
+        return undefined;
+
+    } catch (error) {
+        const customError = new Error(`ObtenerImgUsuario() modelo ${error}`);
         (customError as any).statusCode = 500;
         throw customError;
     } finally {
