@@ -8,9 +8,14 @@ import 'dotenv/config'; // configuración de dotenv
 // // importaciones personalizadas 
 import routes from './Routes/routes';
 import { handleErrorMiddleware } from './Middlewares/HandleErrosMiddleware';
+import path from 'path';
+import { checkFileAccessMiddlware } from './Middlewares/Check_files_public';
 
 // Inicializacion de express
 const API_APP = express();
+
+// Toma de las variables del archivo env (desestructuracion)
+const { PORT_SERVER, URL, DIR_UPLOAD, TYPE_CONN } = process.env;
 
 // // Middleware de cors
 // API_APP.use(cors());
@@ -19,20 +24,22 @@ const API_APP = express();
 API_APP.use(express.urlencoded({ extended: true })); // Aceptar Cadenas o arreglos
 API_APP.use(express.json()); // Entender datos en Formato JSON
 
+// Ruta para servir de imagenes
+API_APP.use(`/${DIR_UPLOAD}`, checkFileAccessMiddlware, express.static(path.join(__dirname, `../${DIR_UPLOAD}`)));
+
 // Rutas de la API
 API_APP.use('/', routes);
 
 // Medio para manejar los errores 
 API_APP.use(handleErrorMiddleware);
 
-// Toma de las variables del archivo env (desestructuracion)
-const { PORT_SERVER, URL } = process.env;
 
 // Implementacion desarrollo de dotenv para saber que hacer
 const PORT = PORT_SERVER || 3002;
 const URL_API = URL || 'localhost';
+const PROTOCOL = TYPE_CONN || 'http';
 
 // Puesta en marcha del server 
 API_APP.listen(PORT, () => {
-    console.log(`Escuchando en http://${URL_API}:${PORT}/`);
+    console.log(`Escuchando en ${PROTOCOL}://${URL_API}:${PORT}/`);
 });
