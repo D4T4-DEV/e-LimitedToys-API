@@ -1,6 +1,10 @@
 import { RowDataPacket } from "mysql2";
 import { getConnectionMySQL } from "../DataBase/connector";
 import { Respuesta } from "../Interfaces/ResponseInterface";
+import path from "path";
+const { PORT_SERVER, URL } = process.env;
+const PORT = PORT_SERVER || 3002;
+const URL_API = URL || 'localhost';
 
 interface Banner extends RowDataPacket {
     id: number; 
@@ -13,10 +17,18 @@ export const ObtenerBanners = async (): Promise<Respuesta> => {
     try {
         const [result]: [Banner[], any] = await conn_MYSQL.query(`SELECT * FROM Banners`);
 
-        if(result.length > 0 ){
-            const bannersImgs = result;
-            return { status: 200, message: 'Devolviendo banners', data: {bannersImgs} };
+        if (result.length > 0) {
+            // Mapear los banners y agregar la URL completa de las imágenes
+            const bannersImgs = result.map((banner) => {
+                return {
+                    ...banner,
+                    image_url: `http://${URL_API}:${PORT}/${(banner.banner_img)}` // Ruta completa de la imagen
+                };
+            });
+
+            return { status: 200, message: 'Devolviendo banners', data: { bannersImgs } };
         }
+
         return { status: 404, message: 'No tengo ningun banner' };
     } catch (error) {
         const customError = new Error(`ObtenerBanners() modelo ${error}`);
@@ -25,7 +37,7 @@ export const ObtenerBanners = async (): Promise<Respuesta> => {
     } finally {
         conn_MYSQL.release();
     }
-}
+};
 
 export const SubirBanner = async (ruta: string): Promise<Respuesta> => {
     const conn_MYSQL = await getConnectionMySQL();

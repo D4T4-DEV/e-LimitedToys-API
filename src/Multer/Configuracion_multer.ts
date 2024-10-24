@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 // Filtro aplicado para operar antes de guardar o realizar acciones
 const fileFilter = (req: Request, file: Express.Multer.File, cb: FileFilterCallback) => {
 
-    const TiposAceptados = /jpeg|jpg|png|webp/; // Tipos de archivos aceptados
+    const TiposAceptados = /jpeg|jpg|png|webp|gif/; // Tipos de archivos aceptados
 
     // test verifica si se cumple un patron dado un regex (TiposAceptados) y si cumple devuelve TRUE
     // extname Devuelve la extensión de la ruta, desde el último '.' hasta el final de la cadena en la última parte del camino. Si no hay '.' en la última parte de la ruta o el primer carácter es '.', luego devuelve una cadena vacía.
@@ -17,7 +17,7 @@ const fileFilter = (req: Request, file: Express.Multer.File, cb: FileFilterCallb
     if (extensionArchivo && tipoMIME) {
         return cb(null, true); // Aceptar el archivo si cumple con lo descrito arriba
     } else {
-        cb(new Error('Solo se permiten archivos de imagen (JPEG, JPG, PNG, WEBP)')); // Rechazar el archivo
+        cb(new Error('Solo se permiten archivos de imagen (JPEG, JPG, PNG, WEBP, GIF)')); // Rechazar el archivo
     }
 };
 
