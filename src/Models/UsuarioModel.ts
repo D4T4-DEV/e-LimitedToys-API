@@ -5,6 +5,13 @@ import { EncriptarDatos } from "../Security/Encr_decp";
 import { CifrarContrasenia, CompararContrasenias } from "../Security/Pwd_process";
 import { GenerarToken } from "../Security/Tokens";
 
+const { PORT_SERVER, URL, DIR_BANNERS, TYPE_CONN } = process.env;
+const PORT = PORT_SERVER || 3002;
+const URL_API = URL || 'localhost';
+const PROTOCOL = TYPE_CONN || 'http';
+
+
+const baseURL = `${PROTOCOL}://${URL_API}:${PORT}`;
 
 export const RegistrarUsuario = async (data: UserData): Promise<Respuesta> => {
     // Obtencion de las variables de la interfaz
@@ -111,7 +118,7 @@ export const IniciarSesion = async (data: UserData): Promise<Respuesta> => {
                 const dataEncriptada = EncriptarDatos({
                     id_usuario: id_usuario,
                     nick: nick,
-                    prof_pic: prof_pic,
+                    url_prof_pic: `${baseURL}/${(prof_pic)}`,
                     token: token
                 });
 

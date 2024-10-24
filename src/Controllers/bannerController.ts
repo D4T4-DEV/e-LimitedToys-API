@@ -3,6 +3,9 @@ import { Respuesta } from "../Interfaces/ResponseInterface";
 import * as Servicios from '../Services/bannerService';
 import path from 'path';
 
+// Toma de las variables del archivo env (desestructuracion)
+const { DIR_UPLOAD } = process.env;
+
 export const ObtenerBanners = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const resultadoOperacion: Respuesta = await Servicios.ObtenerBanners();
@@ -26,7 +29,7 @@ export const SubirBanner = async (req: Request, res: Response, next: NextFunctio
     try {
 
         const nombreArchivo = req.file.filename; // Nombre del archivo (opcional)
-        const ruta = path.join('uploads', subcarpeta, req.file.filename); // Ruta completa donde se guardara el archivo siendo: uploads/${subcarpeta}/${nombre_archivo.algo}
+        const ruta = path.join(DIR_UPLOAD!, subcarpeta, req.file.filename); // Ruta completa donde se guardara el archivo siendo: uploads/${subcarpeta}/${nombre_archivo.algo}
 
         // Guardado
         const resultadoOperacion = await Servicios.SubirBanner(ruta, nombreArchivo);
