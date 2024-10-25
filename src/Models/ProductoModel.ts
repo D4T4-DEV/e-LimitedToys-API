@@ -106,7 +106,7 @@ export const ObtenerProductos = async (data: string): Promise<Respuesta> => {
 
         if (productosData.length > 0) {
             // Procesamos cada producto en productosData
-            const productosConImagenes = productosData.map((producto: DataProduct) => {
+            const DataProductos = productosData.map((producto: DataProduct) => {
                 const { nombre_producto, descripcion, marca, imagenes_producto, precio_producto, precio_envio, existencias } = producto;
 
                 // Division de `imagenes_producto` y agregacion de URL base a cada una
@@ -125,7 +125,7 @@ export const ObtenerProductos = async (data: string): Promise<Respuesta> => {
                 };
             });
 
-            return { status: 200, message: `Se ha devuelto los 15 productos del índice ${data}`, data: { productosConImagenes } };
+            return { status: 200, message: `Se ha devuelto los 15 productos del índice ${data}`, data: { DataProductos } };
         }
 
         return { status: 404, message: `No hay productos` };
@@ -149,7 +149,7 @@ export const ObtenerProductoID = async (data: string): Promise<Respuesta> => {
         const productosData: DataProduct[] = result[0] || [];
 
         if (Array.isArray(productosData) && productosData.length > 0) {
-            const DataWhithIMG = productosData.map((producto: DataProduct) => {
+            const DataProductos = productosData.map((producto: DataProduct) => {
                 const { nombre_producto, descripcion, marca, imagenes_producto, precio_producto, precio_envio, existencias } = producto;
 
                 // Division de `imagenes_producto` y agregacion de URL base a cada una
@@ -167,7 +167,7 @@ export const ObtenerProductoID = async (data: string): Promise<Respuesta> => {
                     existencias
                 };
             });
-            return { status: 200, message: `Se ha devuelto los datos del producto`, data: { DataWhithIMG } };
+            return { status: 200, message: `Se ha devuelto los datos del producto`, data: { DataProductos } };
         }
 
         return { status: 404, message: `No existe un producto con id ${data}` };
@@ -191,7 +191,7 @@ export const ObtenerProductosBuscador = async (lista: string, filter: string): P
         const productosData: DataProduct[] = result[0] || [];
 
         if (Array.isArray(productosData) && productosData.length > 0) {
-            const DataWhithIMG = productosData.map((producto: DataProduct) => {
+            const DataProductos = productosData.map((producto: DataProduct) => {
                 const { nombre_producto, descripcion, marca, imagenes_producto, precio_producto, precio_envio, existencias } = producto;
 
                 // Division de `imagenes_producto` y agregacion de URL base a cada una
@@ -209,7 +209,7 @@ export const ObtenerProductosBuscador = async (lista: string, filter: string): P
                     existencias
                 };
             });
-            return { status: 200, message: `Se ha devuelto los datos del producto`, data: { DataWhithIMG } };
+            return { status: 200, message: `Se ha devuelto los datos del producto`, data: { DataProductos } };
         }
 
         return { status: 404, message: `No hay productos que cumplan con el filtro: ${filter}` };
