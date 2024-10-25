@@ -18,21 +18,22 @@ export const ObtenerBanners = async (req: Request, res: Response, next: NextFunc
 
 export const SubirBanner = async (req: Request, res: Response, next: NextFunction) => {
 
-    // Si no tiene un archivo 
-    if (!req.file) {
-        res.status(400).json({ status: 400, message: 'No se ha cargado ningun archivo' });
+    const pathRelativo = req.body.datos.pathRelative;
+
+    if(!pathRelativo){
         return;
     }
 
-    // Nombre de la subcarpeta dentro de uploads
-    const subcarpeta = req.body.subfolder || 'default'; // Si tiene alguna definida la usa, si no usa default
     try {
 
-        const nombreArchivo = req.file.filename; // Nombre del archivo (opcional)
-        const ruta = path.join(DIR_UPLOAD!, subcarpeta, req.file.filename); // Ruta completa donde se guardara el archivo siendo: uploads/${subcarpeta}/${nombre_archivo.algo}
+        // Usar split para dividir la cadena por '/' o '\\' esto para obtener los pedazos
+        const partesURL = pathRelativo.split(/[/\\]/); // Dividir por '/' o '\'
+
+        // Obtiene el ultimo elemento de la URL
+        const nombreArchivo = partesURL.pop(); 
 
         // Guardado
-        const resultadoOperacion = await Servicios.SubirBanner(ruta, nombreArchivo);
+        const resultadoOperacion = await Servicios.SubirBanner(pathRelativo, nombreArchivo);
         res.status(resultadoOperacion.status).json(resultadoOperacion);
     } catch (error) {
         // Pasamos el error al middleware de errores
