@@ -3,6 +3,7 @@ import path from 'path';
 import fs from 'fs';
 import { Request } from 'express';
 import { v4 as uuidv4 } from 'uuid';
+import { DesencriptarDatos } from '../Security/Encr_decp';
 
 const { DIR_UPLOAD } = process.env;
 
@@ -10,6 +11,13 @@ const MAX_FILE_SIZE: number = 10 * 1024 * 1024; // 10MB
 
 // Filtro aplicado para operar antes de guardar o realizar acciones
 const fileFilter = (req: Request, file: Express.Multer.File, cb: FileFilterCallback) => {
+
+    try {
+        const dataDecripty = DesencriptarDatos(req.body.datos_encriptados);
+        req.body.path = dataDecripty.path;
+    } catch (err) {
+        cb(new Error('No se proporcionaron los datos en el formato correcto, verificalo'));
+    }
 
     // Verificar el tamaño del archivo antes de procesarlo
     if (file.size > MAX_FILE_SIZE) {
@@ -32,10 +40,11 @@ const fileFilter = (req: Request, file: Express.Multer.File, cb: FileFilterCallb
 
 // Configuracion de multer en modo guardado de archivos en disco (directorio)
 const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
+    destination: (req, _file, cb) => {
 
         // Obtencion de la subcarpeta por el body
-        const subcarpeta = req.body.subfolder || 'default';
+
+        const subcarpeta =  req.body.path|| 'default';
         const uploadPath = path.join(DIR_UPLOAD!, subcarpeta); // Directorio en donde se guardara uploads/${subcarpeta}
 
         // Si no existe el directorio lo crea (evita problemas de inexistencia de directorios)
