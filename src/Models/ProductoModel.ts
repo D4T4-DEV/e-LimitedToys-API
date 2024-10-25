@@ -1,18 +1,26 @@
 import { getConnectionMySQL } from "../DataBase/connector";
 import { DataProduct } from "../Interfaces/ProductoInterface";
 import { Respuesta } from "../Interfaces/ResponseInterface";
+const { PORT_SERVER, URL, TYPE_CONN } = process.env;
+const PORT = PORT_SERVER || 3002;
+const URL_API = URL || 'localhost';
+const PROTOCOL = TYPE_CONN || 'http';
+const URL_BASE = `${PROTOCOL}://${URL_API}:${PORT}/`;
+
+/*
+    El codigo comentado aqui,son medios que posiblemente se van implementar
 
 export const AniadirProducto = async (data: DataProduct): Promise<Respuesta> => {
 
     // Obtencion de las variables de la interfaz
     const {
-        nombreProducto,
+        nombre_producto,
         categoria,
         marca,
         descripcion,
-        imagenesProducto,
-        precio,
-        precioEnvio,
+        imagenes_producto,
+        precio_producto,
+        precio_envio,
         existencias
     } = data;
 
@@ -33,13 +41,13 @@ export const EditarProducto = async (data: DataProduct): Promise<Respuesta> => {
 
     // Obtencion de las variables de la interfaz
     const {
-        nombreProducto,
+        nombre_producto,
         categoria,
         marca,
         descripcion,
-        imagenesProducto,
-        precio,
-        precioEnvio,
+        imagenes_producto,
+        precio_producto,
+        precio_envio,
         existencias
     } = data;
 
@@ -60,13 +68,13 @@ export const EliminarProducto = async (data: DataProduct): Promise<Respuesta> =>
 
     // Obtencion de las variables de la interfaz
     const {
-        nombreProducto,
+        nombre_producto,
         categoria,
         marca,
         descripcion,
-        imagenesProducto,
-        precio,
-        precioEnvio,
+        imagenes_producto,
+        precio_producto,
+        precio_envio,
         existencias
     } = data;
 
@@ -83,23 +91,88 @@ export const EliminarProducto = async (data: DataProduct): Promise<Respuesta> =>
     }
 }
 
-export const ObtenerProductos = async (data: string): Promise<Respuesta> => {
 
+    👆 Hasta aqui llegan las posibles implementaciones (aplica para sus servicios, controladores y modelos)
+*/
+
+export const ObtenerProductos = async (data: string): Promise<Respuesta> => {
     const conn_MYSQL = await getConnectionMySQL();
 
     try {
         const [result]: any = await conn_MYSQL.query(`CALL ObtenerProductos( ? )`, [data]);
 
         // Tomamos lo que viene de la consulta, o bien asignamos un arreglo vacio
-        const productosData = result[0] || [];
+        const productosData: DataProduct[] = result[0] || [];
 
         if (productosData.length > 0) {
-            return { status: 200, message: `Se ha devuelto los 15 productos del indice ${data}`, data: { productosData } };
+            // Procesamos cada producto en productosData
+            const productosConImagenes = productosData.map((producto: DataProduct) => {
+                const { nombre_producto, descripcion, marca, imagenes_producto, precio_producto, precio_envio, existencias } = producto;
+
+                // Division de `imagenes_producto` y agregacion de URL base a cada una
+                const imagenesConURL = imagenes_producto!
+                    .split(",") // Separamos por comas
+                    .map((img: string) => `${URL_BASE}${img.trim()}`) // concatenacion y eliminamos espacios en blanco
+
+                return {
+                    nombre_producto,
+                    descripcion,
+                    marca,
+                    imagenes_producto: imagenesConURL,
+                    precio_producto,
+                    precio_envio,
+                    existencias
+                };
+            });
+
+            return { status: 200, message: `Se ha devuelto los 15 productos del índice ${data}`, data: { productosConImagenes } };
         }
 
         return { status: 404, message: `No hay productos` };
     } catch (error) {
         const customError = new Error(`ObtenerProductos() modelo ${error}`);
+        (customError as any).statusCode = 500;
+        throw customError;
+    } finally {
+        conn_MYSQL.release();
+    }
+};
+
+export const ObtenerProductoID = async (data: string): Promise<Respuesta> => {
+    const conn_MYSQL = await getConnectionMySQL();
+
+
+    try {
+        const [result]: any[] = await conn_MYSQL.query(`CALL ObtenerProductoPorID( ? )`, [data]);
+
+        // Tomamos lo que viene de la consulta, o bien asignamos un arreglo vacio
+        const productosData: DataProduct[] = result[0] || [];
+
+        if (Array.isArray(productosData) && productosData.length > 0) {
+            const DataWhithIMG = productosData.map((producto: DataProduct) => {
+                const { nombre_producto, descripcion, marca, imagenes_producto, precio_producto, precio_envio, existencias } = producto;
+
+                // Division de `imagenes_producto` y agregacion de URL base a cada una
+                const imagenesConURL = imagenes_producto!
+                    .split(",") // separamos por comas
+                    .map((img: string) => `${URL_BASE}${img.trim()}`) // concatenacion y eliminamos espacios en blanco
+
+                return {
+                    nombre_producto,
+                    descripcion,
+                    marca,
+                    imagenes_producto: imagenesConURL,
+                    precio_producto,
+                    precio_envio,
+                    existencias
+                };
+            });
+            return { status: 200, message: `Se ha devuelto los datos del producto`, data: { DataWhithIMG } };
+        }
+
+        return { status: 404, message: `No existe un producto con id ${data}` };
+    } catch (error) {
+        const customError = new Error(`ObtenerProductoID() modelo ${error}`);
         (customError as any).statusCode = 500;
         throw customError;
     } finally {
@@ -115,13 +188,28 @@ export const ObtenerProductosBuscador = async (lista: string, filter: string): P
         const [result]: any = await conn_MYSQL.query(`CALL ObtenerProductosPorFiltro( ? , ? )`, [lista, filter]);
 
         // Tomamos lo que viene de la consulta, o bien asignamos un arreglo vacio
-        const productosData = result[0] || [];
+        const productosData: DataProduct[] = result[0] || [];
 
-        if (productosData.length > 0) {
-            return { status: 200, message: `Se ha devuelto los 15 productos del indice ${lista}, con filtro ${filter}`, data: { 
-                filto: filter,
-                productosData 
-            } };
+        if (Array.isArray(productosData) && productosData.length > 0) {
+            const DataWhithIMG = productosData.map((producto: DataProduct) => {
+                const { nombre_producto, descripcion, marca, imagenes_producto, precio_producto, precio_envio, existencias } = producto;
+
+                // Division de `imagenes_producto` y agregacion de URL base a cada una
+                const imagenesConURL = imagenes_producto!
+                    .split(",") // separamos por comas
+                    .map((img: string) => `${URL_BASE}${img.trim()}`) // concatenacion y eliminamos espacios en blanco
+
+                return {
+                    nombre_producto,
+                    descripcion,
+                    marca,
+                    imagenes_producto: imagenesConURL,
+                    precio_producto,
+                    precio_envio,
+                    existencias
+                };
+            });
+            return { status: 200, message: `Se ha devuelto los datos del producto`, data: { DataWhithIMG } };
         }
 
         return { status: 404, message: `No hay productos que cumplan con el filtro: ${filter}` };
