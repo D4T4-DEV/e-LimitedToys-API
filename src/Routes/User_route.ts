@@ -11,8 +11,6 @@ router.delete('/delete/:user_ID', verifyTokenMiddleware, Controllers.EliminarUsu
 router.get('/obtener-datos/:user_ID', verifyTokenMiddleware, Controllers.ObtenerDatosUsuario)
 
 
-router.post('/upload-img', upload.single('imagen'), Controllers.SubirImagen);
-
 router.put('/edit-direccion', verifyTokenMiddleware, Controllers.EditarDireccion);
 router.put('/edit-photo', verifyTokenMiddleware, );
 router.put('/edit-nick', verifyTokenMiddleware, );
