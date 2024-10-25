@@ -14,7 +14,7 @@ const router = express.Router();
 // router.delete('/delete', proccessDecryptDataMiddleware, Controllers.EliminarProducto);
 
 /*
-    👆 Hasta aqui llegan las posibles implementaciones (aplica para sus servicios y controladores)
+    👆 Hasta aqui llegan las posibles implementaciones (aplica para sus servicios, controladores y modelos)
 */
 
 router.get('/get/:indice_producto',  Controllers.ObtenerProductos);

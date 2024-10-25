@@ -9,7 +9,7 @@ const URL_BASE = `${PROTOCOL}://${URL_API}:${PORT}/`;
 
 /*
     El codigo comentado aqui,son medios que posiblemente se van implementar
-*/
+
 export const AniadirProducto = async (data: DataProduct): Promise<Respuesta> => {
 
     // Obtencion de las variables de la interfaz
@@ -91,8 +91,8 @@ export const EliminarProducto = async (data: DataProduct): Promise<Respuesta> =>
     }
 }
 
-/*
-    👆 Hasta aqui llegan las posibles implementaciones (aplica para sus servicios y controladores)
+
+    👆 Hasta aqui llegan las posibles implementaciones (aplica para sus servicios, controladores y modelos)
 */
 
 export const ObtenerProductos = async (data: string): Promise<Respuesta> => {

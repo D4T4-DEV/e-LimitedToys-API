@@ -60,7 +60,7 @@ export const EliminarProducto = async (req: Request, res: Response, next: NextFu
     }
 }
 
-    👆 Hasta aqui llegan las posibles implementaciones (aplica para sus servicios y controladores)
+    👆 Hasta aqui llegan las posibles implementaciones (aplica para sus servicios, controladores y modelos)
 */
 
 export const ObtenerProductos = async (req: Request, res: Response, next: NextFunction) => {
