@@ -50,6 +50,18 @@ export const ObtenerProductos = async (req: Request, res: Response, next: NextFu
     }
 }
 
+export const ObtenerProductoID = async (req: Request, res: Response, next: NextFunction) => {
+    const { idProducto } = req.params;
+
+    try {
+        const resultadoOperacion: Respuesta = await Servicios.ObtenerProductoID(idProducto);
+        res.status(resultadoOperacion.status).json(resultadoOperacion)
+    } catch (error) {
+        // Pasamos el error al middleware de errores
+        next(error);
+    }
+}
+
 export const ObtenerProductosBuscador = async (req: Request, res: Response, next: NextFunction) => {
     const { indice, filter } = req.params;
 
