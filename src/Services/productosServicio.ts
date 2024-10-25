@@ -34,6 +34,15 @@ export const ObtenerProductos = async (data: string): Promise<Respuesta> => {
     }
 }
 
+export const ObtenerProductoID = async (data: string): Promise<Respuesta> => {
+    try {
+        return Models.ObtenerProductoID(data);
+    } catch (err) {
+        throw err;
+    }
+}
+
+
 export const ObtenerProductosBuscador = async (lista: string, filter: string): Promise<Respuesta> => {
     try {
         return Models.ObtenerProductosBuscador(lista, filter);
