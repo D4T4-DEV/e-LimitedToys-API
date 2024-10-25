@@ -87,16 +87,17 @@ export const ObtenerDatosUsuario = async (req: RequestPersonalizado, res: Respon
 }
 
 export const EditarDireccion = async (req: RequestPersonalizado, res: Response, next: NextFunction) => {
-    const { datos } = req.body;
+    const datosParse = JSON.parse(req.body.datos);
 
     const idToken = req.usuarioId;
 
-    if (datos.user_ID != idToken) {
+    if (datosParse.user_ID != idToken) {
         res.status(401).json({ status: 401, message: 'Operacion no valida para este usuario' })
+        return;
     }
 
     try {
-        const resultadoOperacion: Respuesta = await Servicios.EditarDireccion(datos);
+        const resultadoOperacion: Respuesta = await Servicios.EditarDireccion(datosParse);
         res.status(resultadoOperacion.status).json(resultadoOperacion)
     } catch (error) {
         // Pasamos el error al middleware de errores

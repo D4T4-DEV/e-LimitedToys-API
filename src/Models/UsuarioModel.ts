@@ -143,15 +143,11 @@ export const IniciarSesion = async (data: UserData): Promise<Respuesta> => {
 }
 
 export const EditarDireccion = async (data: UserData): Promise<Respuesta> => {
-
+    console.log(data);
+    
     // Obtencion de las variables de la interfaz
     const {
-        nombres,
-        apellidos,
-        email,
-        password, // Contraseña plana o hasheada
-        nickname,
-        imagenPerfil,
+        user_ID,
         calle,
         referencia,
         pais,
@@ -159,11 +155,27 @@ export const EditarDireccion = async (data: UserData): Promise<Respuesta> => {
         colonia,
         codigoPostal
     } = data;
+    console.log(user_ID, pais);
 
     const conn_MYSQL = await getConnectionMySQL();
-
+    
     try {
-        return { status: 200, message: 'Se edito correctamente el usuario' };
+        const [result]: any[] = await conn_MYSQL.query(`
+            CALL ModificarDireccion(?, ?, ?, ?, ?, ?, ?, @mensaje );
+        `, [user_ID, calle, referencia, pais, ciudad, colonia, codigoPostal]);
+
+        const [mensajeResult]: any[] = await conn_MYSQL.query(`
+            SELECT @mensaje AS mensaje;
+        `);
+        console.log(mensajeResult);
+
+        if (mensajeResult[0] === 'Se modifico la direccion') {
+            const queryResult = result[0];
+            return { status: 200, message: `Modifique la direccion`, data: {queryResult}};
+        } else {
+            return { status: 404, message: mensajeResult };
+        }
+
     } catch (error) {
         const customError = new Error(`EditarUsuario() modelo ${error}`);
         (customError as any).statusCode = 500;
