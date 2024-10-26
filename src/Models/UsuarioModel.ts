@@ -142,9 +142,7 @@ export const IniciarSesion = async (data: UserData): Promise<Respuesta> => {
     }
 }
 
-export const EditarDireccion = async (data: UserData): Promise<Respuesta> => {
-    console.log(data);
-    
+export const EditarDireccion = async (data: UserData): Promise<Respuesta> => {    
     // Obtencion de las variables de la interfaz
     const {
         user_ID,
@@ -155,7 +153,6 @@ export const EditarDireccion = async (data: UserData): Promise<Respuesta> => {
         colonia,
         codigoPostal
     } = data;
-    console.log(user_ID, pais);
 
     const conn_MYSQL = await getConnectionMySQL();
     
@@ -167,14 +164,36 @@ export const EditarDireccion = async (data: UserData): Promise<Respuesta> => {
         const [mensajeResult]: any[] = await conn_MYSQL.query(`
             SELECT @mensaje AS mensaje;
         `);
-        console.log(mensajeResult);
 
-        if (mensajeResult[0] === 'Se modifico la direccion') {
-            const queryResult = result[0];
-            return { status: 200, message: `Modifique la direccion`, data: {queryResult}};
-        } else {
+        if (mensajeResult[0].mensaje != 'Se modifico la direccion') {
             return { status: 404, message: mensajeResult };
         }
+        return { status: 200, message: `Modifique la direccion`};
+
+    } catch (error) {
+        const customError = new Error(`EditarUsuario() modelo ${error}`);
+        (customError as any).statusCode = 500;
+        throw customError;
+    } finally {
+        conn_MYSQL.release();
+    }
+}
+
+export const EditarNick = async (data: UserData): Promise<Respuesta> => {    
+    // Obtencion de las variables de la interfaz
+    const {
+        nickname,
+        user_ID        
+    } = data;
+
+    const conn_MYSQL = await getConnectionMySQL();
+    
+    try {
+        const [result]: any[] = await conn_MYSQL.query(`
+            UPDATE Usuarios SET nick = (?) WHERE id_usuario = (?);
+        `, [nickname, user_ID]);
+
+        return { status: 200, message: `Modifique el nickname del usuario`};
 
     } catch (error) {
         const customError = new Error(`EditarUsuario() modelo ${error}`);

@@ -104,3 +104,21 @@ export const EditarDireccion = async (req: RequestPersonalizado, res: Response, 
         next(error);
     }
 }
+
+export const EditarNick = async (req: RequestPersonalizado, res: Response, next: NextFunction) => {
+    const datosParse = JSON.parse(req.body.datos);
+
+    const idToken = req.usuarioId;
+
+    if (datosParse.user_ID != idToken) {
+        res.status(401).json({ status: 401, message: 'Operacion no valida' })
+    }
+
+    try {
+        const resultadoOperacion: Respuesta = await Servicios.EditarNick(datosParse);
+        res.status(resultadoOperacion.status).json(resultadoOperacion)
+    } catch (error) {
+        // Pasamos el error al middleware de errores
+        next(error);
+    }
+}
