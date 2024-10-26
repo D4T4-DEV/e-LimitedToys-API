@@ -2,11 +2,22 @@ import { NextFunction, Request, Response } from 'express';
 import { Respuesta } from '../Interfaces/ResponseInterface';
 import * as Servicios from '../Services/productosServicio';
 
+/*
+    Posibles implementaciones
+*/
+
+/*
 export const AniadirProducto = async (req: Request, res: Response, next: NextFunction) => {
-    const { datos } = req.body;
+
+    const Datos = JSON.parse(req.body.datos);
+
+    if(!Datos){
+        res.status(400).json({ status: 400, message: 'No proporcionaste los datos' });
+        return;
+    }
 
     try {
-        const resultadoOperacion: Respuesta = await Servicios.AniadirProducto(datos);
+        const resultadoOperacion: Respuesta = await Servicios.AniadirProducto(Datos);
         res.status(resultadoOperacion.status).json(resultadoOperacion)
     } catch (error) {
         // Pasamos el error al middleware de errores
@@ -15,10 +26,15 @@ export const AniadirProducto = async (req: Request, res: Response, next: NextFun
 }
 
 export const EditarProducto = async (req: Request, res: Response, next: NextFunction) => {
-    const { datos } = req.body;
+    const Datos = JSON.parse(req.body.datos);
+
+    if(!Datos){
+        res.status(400).json({ status: 400, message: 'No proporcionaste los datos' });
+        return;
+    }
 
     try {
-        const resultadoOperacion: Respuesta = await Servicios.EditarProducto(datos);
+        const resultadoOperacion: Respuesta = await Servicios.EditarProducto(Datos);
         res.status(resultadoOperacion.status).json(resultadoOperacion)
     } catch (error) {
         // Pasamos el error al middleware de errores
@@ -27,10 +43,16 @@ export const EditarProducto = async (req: Request, res: Response, next: NextFunc
 }
 
 export const EliminarProducto = async (req: Request, res: Response, next: NextFunction) => {
-    const { datos } = req.body;
+
+    const Datos = JSON.parse(req.body.datos);
+
+    if(!Datos){
+        res.status(400).json({ status: 400, message: 'No proporcionaste ningun dato' });
+        return;
+    }
 
     try {
-        const resultadoOperacion: Respuesta = await Servicios.EliminarProducto(datos);
+        const resultadoOperacion: Respuesta = await Servicios.EliminarProducto(Datos);
         res.status(resultadoOperacion.status).json(resultadoOperacion)
     } catch (error) {
         // Pasamos el error al middleware de errores
@@ -38,8 +60,16 @@ export const EliminarProducto = async (req: Request, res: Response, next: NextFu
     }
 }
 
+    👆 Hasta aqui llegan las posibles implementaciones (aplica para sus servicios, controladores y modelos)
+*/
+
 export const ObtenerProductos = async (req: Request, res: Response, next: NextFunction) => {
     const { indice_producto } = req.params;
+
+    if (!indice_producto) {
+        res.status(400).json({ status: 400, message: 'No proporcionaste los datos' });
+        return;
+    }
 
     try {
         const resultadoOperacion: Respuesta = await Servicios.ObtenerProductos(indice_producto);
@@ -50,8 +80,30 @@ export const ObtenerProductos = async (req: Request, res: Response, next: NextFu
     }
 }
 
+export const ObtenerProductoID = async (req: Request, res: Response, next: NextFunction) => {
+    const { idProducto } = req.params;
+
+    if (!idProducto) {
+        res.status(400).json({ status: 400, message: 'No proporcionaste los datos' });
+        return;
+    }
+
+    try {
+        const resultadoOperacion: Respuesta = await Servicios.ObtenerProductoID(idProducto);
+        res.status(resultadoOperacion.status).json(resultadoOperacion)
+    } catch (error) {
+        // Pasamos el error al middleware de errores
+        next(error);
+    }
+}
+
 export const ObtenerProductosBuscador = async (req: Request, res: Response, next: NextFunction) => {
     const { indice, filter } = req.params;
+
+    if (!indice || !filter) {
+        res.status(400).json({ status: 400, message: 'No proporcionaste los datos necesarios' });
+        return;
+    }
 
     try {
         const resultadoOperacion: Respuesta = await Servicios.ObtenerProductosBuscador(indice, filter);

@@ -2,6 +2,11 @@ import { DataProduct } from "../Interfaces/ProductoInterface";
 import { Respuesta } from "../Interfaces/ResponseInterface";
 import * as Models from '../Models/ProductoModel';
 
+/*
+    Posibles implementaciones
+*/
+
+/*
 export const AniadirProducto = async (data: DataProduct): Promise<Respuesta> => {
     try {
         return Models.AniadirProducto(data);
@@ -26,6 +31,8 @@ export const EliminarProducto = async (data: DataProduct): Promise<Respuesta> =>
     }
 }
 
+    👆 Hasta aqui llegan las posibles implementaciones (aplica para sus servicios, controladores y modelos)
+*/
 export const ObtenerProductos = async (data: string): Promise<Respuesta> => {
     try {
         return Models.ObtenerProductos(data);
@@ -33,6 +40,15 @@ export const ObtenerProductos = async (data: string): Promise<Respuesta> => {
         throw err;
     }
 }
+
+export const ObtenerProductoID = async (data: string): Promise<Respuesta> => {
+    try {
+        return Models.ObtenerProductoID(data);
+    } catch (err) {
+        throw err;
+    }
+}
+
 
 export const ObtenerProductosBuscador = async (lista: string, filter: string): Promise<Respuesta> => {
     try {
