@@ -34,6 +34,14 @@ export const EditarNick = async (data: any): Promise<Respuesta> => {
     }
 }
 
+export const EditarFotoPerfil = async (data: any): Promise<Respuesta> => {
+    try {
+        return Models.EditarFotoPerfil(data);
+    } catch (err) {
+        throw err;
+    }
+}
+
 export const EliminarUsuario = async (data: UserData): Promise<Respuesta> => {
     try {
         return Models.EliminarUsuario(data);

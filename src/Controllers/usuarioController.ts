@@ -87,7 +87,7 @@ export const ObtenerDatosUsuario = async (req: RequestPersonalizado, res: Respon
 }
 
 export const EditarDireccion = async (req: RequestPersonalizado, res: Response, next: NextFunction) => {
-    const datosParse = JSON.parse(req.body.datos);
+    const datosParse = (req.body.datos);
 
     const idToken = req.usuarioId;
 
@@ -106,16 +106,47 @@ export const EditarDireccion = async (req: RequestPersonalizado, res: Response, 
 }
 
 export const EditarNick = async (req: RequestPersonalizado, res: Response, next: NextFunction) => {
-    const datosParse = JSON.parse(req.body.datos);
+    const datosParse = (req.body);
+
+    if(!datosParse){
+        res.status(400).json({ status: 401, message: 'No se enviaron los datos correctos' });
+        return;
+    }
 
     const idToken = req.usuarioId;
 
     if (datosParse.user_ID != idToken) {
-        res.status(401).json({ status: 401, message: 'Operacion no valida' })
+        res.status(401).json({ status: 401, message: 'Operacion no valida' });
+        return;
     }
 
     try {
         const resultadoOperacion: Respuesta = await Servicios.EditarNick(datosParse);
+        res.status(resultadoOperacion.status).json(resultadoOperacion)
+    } catch (error) {
+        // Pasamos el error al middleware de errores
+        next(error);
+    }
+}
+
+export const EditarFotoPerfil = async (req: RequestPersonalizado, res: Response, next: NextFunction) => {
+    
+    const datosParse = (req.body.datos);
+
+    if(!datosParse){
+        res.status(400).json({ status: 401, message: 'No se enviaron los datos' });
+        return;
+    }
+    
+    const idToken = req.usuarioId;
+
+    if (datosParse.user_ID != idToken) {
+        res.status(401).json({ status: 401, message: 'Operacion no valida' });
+        return;
+    }
+
+    try {
+        const resultadoOperacion: Respuesta = await Servicios.EditarFotoPerfil(datosParse);
         res.status(resultadoOperacion.status).json(resultadoOperacion)
     } catch (error) {
         // Pasamos el error al middleware de errores

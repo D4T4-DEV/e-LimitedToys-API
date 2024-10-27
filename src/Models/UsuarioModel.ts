@@ -142,7 +142,7 @@ export const IniciarSesion = async (data: UserData): Promise<Respuesta> => {
     }
 }
 
-export const EditarDireccion = async (data: UserData): Promise<Respuesta> => {    
+export const EditarDireccion = async (data: UserData): Promise<Respuesta> => {
     // Obtencion de las variables de la interfaz
     const {
         user_ID,
@@ -155,7 +155,7 @@ export const EditarDireccion = async (data: UserData): Promise<Respuesta> => {
     } = data;
 
     const conn_MYSQL = await getConnectionMySQL();
-    
+
     try {
         const [result]: any[] = await conn_MYSQL.query(`
             CALL ModificarDireccion(?, ?, ?, ?, ?, ?, ?, @mensaje );
@@ -168,7 +168,7 @@ export const EditarDireccion = async (data: UserData): Promise<Respuesta> => {
         if (mensajeResult[0].mensaje != 'Se modifico la direccion') {
             return { status: 404, message: mensajeResult };
         }
-        return { status: 200, message: `Modifique la direccion`};
+        return { status: 200, message: `Modifique la direccion` };
 
     } catch (error) {
         const customError = new Error(`EditarUsuario() modelo ${error}`);
@@ -179,30 +179,60 @@ export const EditarDireccion = async (data: UserData): Promise<Respuesta> => {
     }
 }
 
-export const EditarNick = async (data: UserData): Promise<Respuesta> => {    
+export const EditarNick = async (data: UserData): Promise<Respuesta> => {
     // Obtencion de las variables de la interfaz
     const {
         nickname,
-        user_ID        
+        user_ID
     } = data;
 
     const conn_MYSQL = await getConnectionMySQL();
-    
+
     try {
         const [result]: any[] = await conn_MYSQL.query(`
             UPDATE Usuarios SET nick = (?) WHERE id_usuario = (?);
         `, [nickname, user_ID]);
 
-        return { status: 200, message: `Modifique el nickname del usuario`};
+        return { status: 200, message: `Modifique el nickname del usuario` };
 
     } catch (error) {
-        const customError = new Error(`EditarUsuario() modelo ${error}`);
+        const customError = new Error(`EditarNick() modelo ${error}`);
         (customError as any).statusCode = 500;
         throw customError;
     } finally {
         conn_MYSQL.release();
     }
 }
+
+export const EditarFotoPerfil = async (data: UserData): Promise<Respuesta> => {
+    // Obtencion de las variables de la interfaz
+    const {
+        imagenPerfil,
+        user_ID
+    } = data;
+
+    const conn_MYSQL = await getConnectionMySQL();
+
+    try {
+        const [result]: any[] = await conn_MYSQL.query(`
+            UPDATE Usuarios SET prof_pic = (?) WHERE id_usuario = (?);
+        `, [imagenPerfil, user_ID]);
+
+        if (result.affectedRows === 0) {
+            return { status: 500, message: 'No se subio la imagen, porfavor intentelo mas tarde' };
+        }
+
+        return { status: 200, message: `Modifique la foto de perfil del usuario` };
+
+    } catch (error) {
+        const customError = new Error(`EditarFotoPerfil() modelo ${error}`);
+        (customError as any).statusCode = 500;
+        throw customError;
+    } finally {
+        conn_MYSQL.release();
+    }
+}
+
 
 export const EliminarUsuario = async (data: UserData): Promise<Respuesta> => {
     // Obtencion de las variables de la interfaz
