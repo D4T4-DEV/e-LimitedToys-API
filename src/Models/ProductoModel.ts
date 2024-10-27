@@ -112,7 +112,7 @@ export const ObtenerProductos = async (data: string): Promise<Respuesta> => {
                 // Division de `imagenes_producto` y agregacion de URL base a cada una
                 const imagenesConURL = imagenes_producto!
                     .split(",") // Separamos por comas
-                    .map((img: string) => `${URL_BASE}${img.trim()}`) // concatenacion y eliminamos espacios en blanco
+                    .map((img: string) => `${URL_BASE}${img.trim().replace(/\\/g, '/')}`) // concatenacion y eliminamos espacios en blanco
 
                 return {
                     nombre_producto,
@@ -155,7 +155,7 @@ export const ObtenerProductoID = async (data: string): Promise<Respuesta> => {
                 // Division de `imagenes_producto` y agregacion de URL base a cada una
                 const imagenesConURL = imagenes_producto!
                     .split(",") // separamos por comas
-                    .map((img: string) => `${URL_BASE}${img.trim()}`) // concatenacion y eliminamos espacios en blanco
+                    .map((img: string) => `${URL_BASE}${img.trim().replace(/\\/g, '/')}`) // concatenacion y eliminamos espacios en blanco
 
                 return {
                     nombre_producto,
@@ -197,7 +197,7 @@ export const ObtenerProductosBuscador = async (lista: string, filter: string): P
                 // Division de `imagenes_producto` y agregacion de URL base a cada una
                 const imagenesConURL = imagenes_producto!
                     .split(",") // separamos por comas
-                    .map((img: string) => `${URL_BASE}${img.trim()}`) // concatenacion y eliminamos espacios en blanco
+                    .map((img: string) => `${URL_BASE}${img.trim().replace(/\\/g, '/')}`) // concatenacion y eliminamos espacios en blanco
 
                 return {
                     nombre_producto,
