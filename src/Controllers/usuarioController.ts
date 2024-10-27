@@ -2,34 +2,14 @@ import { NextFunction, Request, Response } from 'express';
 import { Respuesta } from '../Interfaces/ResponseInterface';
 import * as Servicios from '../Services/usuarioService';
 import { RequestPersonalizado } from '../Interfaces/Request/personalizateRequestUser';
-import path from 'path';
-
-// Toma de las variables del archivo env (desestructuracion)
-const { DIR_UPLOAD } = process.env;
-
-export const SubirImagen = async (req: Request, res: Response, next: NextFunction) => {
-    // Si no tiene un archivo 
-    if (!req.file) {
-        res.status(400).json({ status: 400, message: 'No se ha cargado ningun archivo' });
-        return;
-    }
-
-    // Nombre de la subcarpeta dentro de uploads
-    const subcarpeta = req.body.subfolder || 'default'; // Si tiene alguna definida la usa, si no usa default
-    try {
-
-        const nombreArchivo = req.file.filename; // Nombre del archivo (opcional)
-        const ruta = path.join(DIR_UPLOAD!, subcarpeta, nombreArchivo); // Ruta completa donde se guardara el archivo siendo: uploads/${subcarpeta}/${nombre_archivo.algo}
-        res.status(200).json({path_relative: ruta});
-    } catch (error) {
-        // Pasamos el error al middleware de errores
-        next(error);
-    }
-}
-
 
 export const RegistrarUsuario = async (req: Request, res: Response, next: NextFunction) => {
     const { datos } = req.body;
+
+    if (!datos) {
+        res.status(400).json({ status: 401, message: 'No se enviaron los datos correctos' });
+        return;
+    }
 
     try {
         const resultadoOperacion: Respuesta = await Servicios.RegistrarUsuario(datos);
@@ -43,6 +23,11 @@ export const RegistrarUsuario = async (req: Request, res: Response, next: NextFu
 export const IniciarSesion = async (req: Request, res: Response, next: NextFunction) => {
     const { datos } = req.body;
 
+    if (!datos) {
+        res.status(400).json({ status: 401, message: 'No se enviaron los datos correctos' });
+        return;
+    }
+
     try {
         const resultadoOperacion: Respuesta = await Servicios.IniciarSesion(datos);
         res.status(resultadoOperacion.status).json(resultadoOperacion)
@@ -54,10 +39,17 @@ export const IniciarSesion = async (req: Request, res: Response, next: NextFunct
 
 export const EliminarUsuario = async (req: RequestPersonalizado, res: Response, next: NextFunction) => {
     const { user_ID } = req.params;
+    
+    if (!user_ID) {
+        res.status(400).json({ status: 401, message: 'No se enviaron los datos correctos' });
+        return;
+    }
+    
     const idToken = req.usuarioId;
-
+    
     if (user_ID != idToken) {
-        res.status(401).json({ status: 401, message: 'Operacion no valida para este usuario' })
+        res.status(401).json({ status: 401, message: 'Operacion no valida para este usuario' });
+        return;
     }
 
     try {
@@ -71,10 +63,16 @@ export const EliminarUsuario = async (req: RequestPersonalizado, res: Response, 
 
 export const ObtenerDatosUsuario = async (req: RequestPersonalizado, res: Response, next: NextFunction) => {
     const { user_ID } = req.params;
-    const idToken = req.usuarioId;
 
+    if (!user_ID) {
+        res.status(400).json({ status: 401, message: 'No se enviaron los datos correctos' });
+        return;
+    }
+
+    const idToken = req.usuarioId;
     if (user_ID != idToken) {
-        res.status(401).json({ status: 401, message: 'Operacion no valida' })
+        res.status(401).json({ status: 401, message: 'Operacion no valida' });
+        return;
     }
 
     try {
@@ -88,6 +86,11 @@ export const ObtenerDatosUsuario = async (req: RequestPersonalizado, res: Respon
 
 export const EditarDireccion = async (req: RequestPersonalizado, res: Response, next: NextFunction) => {
     const datosParse = (req.body.datos);
+
+    if (typeof datosParse !== 'object' || datosParse === null) {
+        res.status(400).json({ status: 401, message: 'No se enviaron los datos correctos' });
+        return;
+    }
 
     const idToken = req.usuarioId;
 
@@ -106,9 +109,9 @@ export const EditarDireccion = async (req: RequestPersonalizado, res: Response, 
 }
 
 export const EditarNick = async (req: RequestPersonalizado, res: Response, next: NextFunction) => {
-    const datosParse = (req.body);
+    const datosParse = (req.body.datos);
 
-    if(!datosParse){
+    if (typeof datosParse !== 'object' || datosParse === null) {
         res.status(400).json({ status: 401, message: 'No se enviaron los datos correctos' });
         return;
     }
@@ -130,14 +133,14 @@ export const EditarNick = async (req: RequestPersonalizado, res: Response, next:
 }
 
 export const EditarFotoPerfil = async (req: RequestPersonalizado, res: Response, next: NextFunction) => {
-    
+
     const datosParse = (req.body.datos);
 
-    if(!datosParse){
-        res.status(400).json({ status: 401, message: 'No se enviaron los datos' });
+    if (typeof datosParse !== 'object' || datosParse === null) {
+        res.status(400).json({ status: 401, message: 'No se enviaron los datos correctos' });
         return;
     }
-    
+
     const idToken = req.usuarioId;
 
     if (datosParse.user_ID != idToken) {

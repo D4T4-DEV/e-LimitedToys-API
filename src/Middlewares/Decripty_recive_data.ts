@@ -15,6 +15,7 @@ export function proccessDecryptDataMiddleware(req: Request, res: Response, next:
     // Checamos que exista el dato en el body
     if (!datos_encriptados) {
         res.status(responseNoData.status).send(responseNoData);
+        return;
     }
 
     try {
