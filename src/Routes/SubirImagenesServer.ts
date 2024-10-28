@@ -24,7 +24,7 @@ Router.post('/new',
         const nombreArchivo = req.file.filename;
         const ruta = path.join(DIR_UPLOAD!, subcarpeta, nombreArchivo).replace(/\\/g, '/'); // Ruta completa donde se guardara el archivo siendo: uploads/${subcarpeta}/${nombre_archivo.algo}
 
-        res.status(200).json({path_relative: ruta});
+        res.status(200).json({status: 200, message: 'He guardado la imagen, en el path relativo', path_relative: ruta});
     } catch (error) {
         // Pasamos el error al middleware de errores
         next(error);

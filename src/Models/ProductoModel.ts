@@ -209,7 +209,7 @@ export const ObtenerProductosBuscador = async (lista: string, filter: string): P
                     existencias
                 };
             });
-            return { status: 200, message: `Se ha devuelto los datos del producto`, data: { DataProductos } };
+            return { status: 200, message: `Se ha devuelto los datos del producto por el input ${filter} y pagina ${lista}`, data: { DataProductos } };
         }
 
         return { status: 404, message: `No hay productos que cumplan con el filtro: ${filter}` };
