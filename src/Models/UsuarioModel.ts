@@ -5,6 +5,13 @@ import { EncriptarDatos } from "../Security/Encr_decp";
 import { CifrarContrasenia, CompararContrasenias } from "../Security/Pwd_process";
 import { GenerarToken } from "../Security/Tokens";
 
+const { PORT_SERVER, URL, DIR_BANNERS, TYPE_CONN } = process.env;
+const PORT = PORT_SERVER || 3002;
+const URL_API = URL || 'localhost';
+const PROTOCOL = TYPE_CONN || 'http';
+
+
+const baseURL = `${PROTOCOL}://${URL_API}:${PORT}`;
 
 export const RegistrarUsuario = async (data: UserData): Promise<Respuesta> => {
     // Obtencion de las variables de la interfaz
@@ -111,7 +118,7 @@ export const IniciarSesion = async (data: UserData): Promise<Respuesta> => {
                 const dataEncriptada = EncriptarDatos({
                     id_usuario: id_usuario,
                     nick: nick,
-                    prof_pic: prof_pic,
+                    url_prof_pic: `${baseURL}/${(prof_pic)}`,
                     token: token
                 });
 
@@ -136,15 +143,9 @@ export const IniciarSesion = async (data: UserData): Promise<Respuesta> => {
 }
 
 export const EditarDireccion = async (data: UserData): Promise<Respuesta> => {
-
     // Obtencion de las variables de la interfaz
     const {
-        nombres,
-        apellidos,
-        email,
-        password, // Contraseña plana o hasheada
-        nickname,
-        imagenPerfil,
+        user_ID,
         calle,
         referencia,
         pais,
@@ -156,7 +157,19 @@ export const EditarDireccion = async (data: UserData): Promise<Respuesta> => {
     const conn_MYSQL = await getConnectionMySQL();
 
     try {
-        return { status: 200, message: 'Se edito correctamente el usuario' };
+        const [result]: any[] = await conn_MYSQL.query(`
+            CALL ModificarDireccion(?, ?, ?, ?, ?, ?, ?, @mensaje );
+        `, [user_ID, calle, referencia, pais, ciudad, colonia, codigoPostal]);
+
+        const [mensajeResult]: any[] = await conn_MYSQL.query(`
+            SELECT @mensaje AS mensaje;
+        `);
+
+        if (mensajeResult[0].mensaje != 'Se modifico la direccion') {
+            return { status: 404, message: mensajeResult };
+        }
+        return { status: 200, message: `Modifique la direccion` };
+
     } catch (error) {
         const customError = new Error(`EditarUsuario() modelo ${error}`);
         (customError as any).statusCode = 500;
@@ -165,6 +178,61 @@ export const EditarDireccion = async (data: UserData): Promise<Respuesta> => {
         conn_MYSQL.release();
     }
 }
+
+export const EditarNick = async (data: UserData): Promise<Respuesta> => {
+    // Obtencion de las variables de la interfaz
+    const {
+        nickname,
+        user_ID
+    } = data;
+
+    const conn_MYSQL = await getConnectionMySQL();
+
+    try {
+        const [result]: any[] = await conn_MYSQL.query(`
+            UPDATE Usuarios SET nick = (?) WHERE id_usuario = (?);
+        `, [nickname, user_ID]);
+
+        return { status: 200, message: `Modifique el nickname del usuario` };
+
+    } catch (error) {
+        const customError = new Error(`EditarNick() modelo ${error}`);
+        (customError as any).statusCode = 500;
+        throw customError;
+    } finally {
+        conn_MYSQL.release();
+    }
+}
+
+export const EditarFotoPerfil = async (data: UserData): Promise<Respuesta> => {
+    // Obtencion de las variables de la interfaz
+    const {
+        imagenPerfil,
+        user_ID
+    } = data;
+
+    const conn_MYSQL = await getConnectionMySQL();
+
+    try {
+        const [result]: any[] = await conn_MYSQL.query(`
+            UPDATE Usuarios SET prof_pic = (?) WHERE id_usuario = (?);
+        `, [imagenPerfil, user_ID]);
+
+        if (result.affectedRows === 0) {
+            return { status: 500, message: 'No se subio la imagen, porfavor intentelo mas tarde' };
+        }
+
+        return { status: 200, message: `Modifique la foto de perfil del usuario` };
+
+    } catch (error) {
+        const customError = new Error(`EditarFotoPerfil() modelo ${error}`);
+        (customError as any).statusCode = 500;
+        throw customError;
+    } finally {
+        conn_MYSQL.release();
+    }
+}
+
 
 export const EliminarUsuario = async (data: UserData): Promise<Respuesta> => {
     // Obtencion de las variables de la interfaz
@@ -210,12 +278,35 @@ export const ObtenerDatosUsuario = async (data: UserData): Promise<Respuesta> =>
         const userData = result[0] || [];
 
         if (userData.length > 0) {
-            return { status: 200, message: 'Devolviendo datos', data: {userData} };
+            return { status: 200, message: 'Devolviendo datos', data: { userData } };
         }
         return { status: 404, message: 'El usuario dado, no existe' };
 
     } catch (error) {
         const customError = new Error(`ObtenerDatosUsuario() modelo ${error}`);
+        (customError as any).statusCode = 500;
+        throw customError;
+    } finally {
+        conn_MYSQL.release();
+    }
+}
+
+export const ObtenerImgUsuario = async (user_ID: string): Promise<string | undefined> => {
+    const conn_MYSQL = await getConnectionMySQL();
+
+    try {
+        const [result]: any = await conn_MYSQL.query(`SELECT prof_pic FROM usuarios WHERE id_usuario = ?`, [user_ID]);
+
+        // Verificamos si la respuesta no esta vacia y contenga el campo esperado
+        if (result.length > 0 && result[0].prof_pic) {
+            return result[0].prof_pic;
+        }
+
+        // Si no hay resultado dada la condicion, o no se tiene el campo esperado
+        return undefined;
+
+    } catch (error) {
+        const customError = new Error(`ObtenerImgUsuario() modelo ${error}`);
         (customError as any).statusCode = 500;
         throw customError;
     } finally {

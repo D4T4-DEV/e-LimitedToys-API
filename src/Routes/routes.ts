@@ -8,11 +8,13 @@ import Productos from './Products_route';
 import Usuarios from './User_route';
 import ShoppingCart from './Carrito_route';
 import Banners from './Banner_route';
+import SubirImagenesServer from './SubirImagenesServer';
 
 // Rutas especificas
 
 // Estado del server
 Router.use('/status-server', StatusServer);
+Router.use('/subir-img',  SubirImagenesServer);
 
 // Productos
 Router.use('/productos', Productos);
