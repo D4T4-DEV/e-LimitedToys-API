@@ -66,19 +66,26 @@ export const SubirBanner = async (ruta: string, nombreArchivo: string): Promise<
     }
 }
 
-export const BorrarBanner = async (idBanner: string, nameImagen: string): Promise<Respuesta> => {
+export const BorrarBanner = async (idBanner: string): Promise<Respuesta> => {
     const conn_MYSQL = await getConnectionMySQL();
 
     try {
-        const [result]: any = await conn_MYSQL.query(`DELETE FROM banners WHERE (id_banner = ?)`, [idBanner]);
+        const [relativePathAnt]: any = await conn_MYSQL.query(`SELECT banner_img FROM Banners WHERE id_banner = (?)`, [idBanner]);
+        const rutaImagen = relativePathAnt[0]?.banner_img;
 
-        if (result.affectedRows === 0) {
-            return { status: 404, message: `Imagen con ID ${idBanner} y ${nameImagen} no existe` };
+        if (!rutaImagen) {
+            return { status: 404, message: `Imagen con ID ${idBanner} no existe` };
         }
 
+        const nombreImagen = path.basename(rutaImagen);
+        const [result]: any[] = await conn_MYSQL.query(`DELETE FROM banners WHERE (id_banner = ?)`, [idBanner]);
+
+        if (result.affectedRows === 0) {
+            return { status: 500, message: 'No se elimino el banner, porfavor intentelo mas tarde' };
+        }
 
         // ASPECTO PARA ELIMINAR LA IMAGEN DEL DIRECTORIO
-        const imagePath = path.join(__dirname, `../../${DIR_BANNERS}`, nameImagen);
+        const imagePath = path.join(__dirname, `../../${rutaImagen}`);
 
         // Verifica si la imagen existe antes de eliminarla
         try {
@@ -86,10 +93,10 @@ export const BorrarBanner = async (idBanner: string, nameImagen: string): Promis
 
             // Elimina la imagen del servidor
             await fs.promises.unlink(imagePath);
-            return { status: 200, message: `Se eliminó correctamente ${nameImagen}` };
+            return { status: 200, message: `Se eliminó correctamente ${nombreImagen}` };
         } catch (err) {
-            console.error(`Error al eliminar la imagen ${nameImagen}:`, err);
-            return { status: 500, message: `Surgió un error al tratar de eliminar ${nameImagen}` };
+            console.error(`Error al eliminar la imagen ${nombreImagen}:`, err);
+            return { status: 500, message: `Surgió un error al tratar de eliminar ${nombreImagen}` };
         }
 
     } catch (error) {

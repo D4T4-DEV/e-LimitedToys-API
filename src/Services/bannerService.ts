@@ -18,9 +18,9 @@ export const SubirBanner = async (ruta: string, nombreArchivo: string): Promise<
     }
 }
 
-export const BorrarBanner = async (idBanner: string, nameImagen: string): Promise<Respuesta> => {
+export const BorrarBanner = async (idBanner: string): Promise<Respuesta> => {
     try {
-        return Models.BorrarBanner(idBanner, nameImagen);
+        return Models.BorrarBanner(idBanner);
     } catch (err) {
         throw err;
     }

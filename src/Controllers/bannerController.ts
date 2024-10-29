@@ -43,10 +43,10 @@ export const SubirBanner = async (req: Request, res: Response, next: NextFunctio
 
 export const BorrarBanner = async (req: Request, res: Response, next: NextFunction) => {
 
-    const { id_banner, nameImagen } = req.params;
+    const { id_banner } = req.params;
 
     try {
-        const resultadoOperacion: Respuesta = await Servicios.BorrarBanner(id_banner, nameImagen);
+        const resultadoOperacion: Respuesta = await Servicios.BorrarBanner(id_banner);
         res.status(resultadoOperacion.status).json(resultadoOperacion)
     } catch (error) {
         // Pasamos el error al middleware de errores

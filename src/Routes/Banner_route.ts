@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.get('/get', Controllers.ObtenerBanners);
 router.post('/upload', proccessDecryptDataMiddleware, Controllers.SubirBanner);
-router.delete('/delete/:id_banner/:nameImagen', Controllers.BorrarBanner);
+router.delete('/delete/:id_banner', Controllers.BorrarBanner);
 
 
 export default router;
