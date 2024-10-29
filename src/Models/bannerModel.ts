@@ -31,7 +31,7 @@ export const ObtenerBanners = async (): Promise<Respuesta> => {
             return {
                 id_img: id_banner,
                 nombre_img: nombre_tipo,
-                img_url: `${baseURL}/${(banner_img)}`
+                img_url: `${baseURL}/${banner_img.trim().replace(/\\/g, '/')}`
             };
         });
 
