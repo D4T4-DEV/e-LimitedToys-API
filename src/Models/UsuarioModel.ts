@@ -1,3 +1,5 @@
+import path from "path";
+import fs from 'fs';
 import { getConnectionMySQL } from "../DataBase/connector";
 import { Respuesta } from "../Interfaces/ResponseInterface";
 import { UserData } from "../Interfaces/UsuarioInterface";
@@ -214,18 +216,91 @@ export const EditarFotoPerfil = async (data: UserData): Promise<Respuesta> => {
     const conn_MYSQL = await getConnectionMySQL();
 
     try {
-        const [result]: any[] = await conn_MYSQL.query(`
-            UPDATE Usuarios SET prof_pic = (?) WHERE id_usuario = (?);
-        `, [imagenPerfil, user_ID]);
+        const [relativePathAnt]: any[] = await conn_MYSQL.query(`SELECT prof_pic FROM Usuarios WHERE id_usuario = (?)`, [user_ID]);
+        const rutaImagen = relativePathAnt[0].prof_pic;
+        const nombreImagen = path.basename(rutaImagen);
 
-        if (result.affectedRows === 0) {
-            return { status: 500, message: 'No se subio la imagen, porfavor intentelo mas tarde' };
+        if (!rutaImagen) {
+            const [result]: any[] = await conn_MYSQL.query(`
+                UPDATE Usuarios SET prof_pic = (?) WHERE id_usuario = (?);
+            `, [imagenPerfil, user_ID]);
+
+            if (result.affectedRows === 0) {
+                return { status: 500, message: 'No se subio la imagen, porfavor intentelo mas tarde' };
+            }
+        } else {
+            const [result]: any[] = await conn_MYSQL.query(`
+                UPDATE Usuarios SET prof_pic = (?) WHERE id_usuario = (?);
+            `, [imagenPerfil, user_ID]);
+
+            if (result.affectedRows === 0) {
+                return { status: 500, message: 'No se subio la imagen, porfavor intentelo mas tarde' };
+            }
+            
+            // ASPECTO PARA ELIMINAR LA IMAGEN DEL DIRECTORIO
+            const imagePath = path.join(__dirname, `../../${rutaImagen}`);
+
+            // Verifica si la imagen existe antes de eliminarla
+            try {
+                await fs.promises.access(imagePath, fs.constants.F_OK);
+
+                // Elimina la imagen del servidor
+                await fs.promises.unlink(imagePath);
+                return { status: 200, message: `Se eliminó correctamente ${nombreImagen}` };
+            } catch (err) {
+                console.error(`Error al eliminar la imagen ${nombreImagen}:`, err);
+                return { status: 500, message: `Surgió un error al tratar de eliminar ${nombreImagen}` };
+            }
         }
 
         return { status: 200, message: `Modifique la foto de perfil del usuario` };
 
     } catch (error) {
         const customError = new Error(`EditarFotoPerfil() modelo ${error}`);
+        (customError as any).statusCode = 500;
+        throw customError;
+    } finally {
+        conn_MYSQL.release();
+    }
+}
+
+
+export const EliminarFotoPerfil = async (data: UserData): Promise<Respuesta> => {
+    // Obtencion de las variables de la interfaz
+    const { user_ID } = data;
+
+    const conn_MYSQL = await getConnectionMySQL();
+
+    try {
+        const [relativePathAnt]: any[] = await conn_MYSQL.query(`SELECT prof_pic FROM Usuarios WHERE id_usuario = (?)`, [user_ID]);
+        const rutaImagen = relativePathAnt[0].prof_pic;
+        const nombreImagen = path.basename(rutaImagen);
+
+        const [result]: any[] = await conn_MYSQL.query(`
+            UPDATE Usuarios SET prof_pic = NULL WHERE id_usuario = (?);
+        `, [user_ID]);
+
+        if (result.affectedRows === 0) {
+            return { status: 500, message: 'No se elimino la imagen, porfavor intentelo mas tarde' };
+        }
+        
+        // ASPECTO PARA ELIMINAR LA IMAGEN DEL DIRECTORIO
+        const imagePath = path.join(__dirname, `../../${rutaImagen}`);
+
+        // Verifica si la imagen existe antes de eliminarla
+        try {
+            await fs.promises.access(imagePath, fs.constants.F_OK);
+
+            // Elimina la imagen del servidor
+            await fs.promises.unlink(imagePath);
+            return { status: 200, message: `Se eliminó correctamente ${nombreImagen}` };
+        } catch (err) {
+            console.error(`Error al eliminar la imagen ${nombreImagen}:`, err);
+            return { status: 500, message: `Surgió un error al tratar de eliminar ${nombreImagen}` };
+        }
+
+    } catch (error) {
+        const customError = new Error(`EliminarFotoPerfil() modelo ${error}`);
         (customError as any).statusCode = 500;
         throw customError;
     } finally {

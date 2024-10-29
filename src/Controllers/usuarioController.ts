@@ -156,3 +156,28 @@ export const EditarFotoPerfil = async (req: RequestPersonalizado, res: Response,
         next(error);
     }
 }
+
+export const EliminarFotoPerfil = async (req: RequestPersonalizado, res: Response, next: NextFunction) => {
+
+    const datosParse = (req.body.datos);
+
+    if (typeof datosParse !== 'object' || datosParse === null) {
+        res.status(400).json({ status: 401, message: 'No se enviaron los datos correctos' });
+        return;
+    }
+
+    const idToken = req.usuarioId;
+
+    if (datosParse.user_ID != idToken) {
+        res.status(401).json({ status: 401, message: 'Operacion no valida' });
+        return;
+    }
+
+    try {
+        const resultadoOperacion: Respuesta = await Servicios.EliminarFotoPerfil(datosParse);
+        res.status(resultadoOperacion.status).json(resultadoOperacion)
+    } catch (error) {
+        // Pasamos el error al middleware de errores
+        next(error);
+    }
+}
