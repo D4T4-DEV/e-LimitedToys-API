@@ -1,11 +1,13 @@
 import { Request, Response, NextFunction } from 'express';
 import path from 'path';
 import { verifyTokenMiddleware } from './Verify_token';
+import { verificarAccesoImgProfile } from '../Security/Check_acc_imgs';
+import { RequestPersonalizado } from '../Interfaces/Request/personalizateRequestUser';
 
 // Toma de las variables del archivo env (desestructuracion)
 const { DIR_UPLOAD } = process.env;
 
-export function checkFileAccessMiddlware(req: Request, res: Response, next: NextFunction) {
+export function checkFileAccessMiddlware(req: RequestPersonalizado, res: Response, next: NextFunction) {
 
     // Normaliza la ruta para verse -> ./algo/algoOtro/
     const requestedFile = path.normalize(path.join(__dirname, `../../${DIR_UPLOAD}`, req.path));
@@ -23,6 +25,16 @@ export function checkFileAccessMiddlware(req: Request, res: Response, next: Next
         return next();
     } else {
         // Si no esta en el directorio, aplica autenticación de token
-        return verifyTokenMiddleware(req, res, next);
+        verifyTokenMiddleware(req, res, async () => {
+            // Verificamos el acceso al recurso solicitado
+            // pasandole los valores al usuario
+            const userHasAccess = await verificarAccesoImgProfile(req.usuarioId!, requestedFile);
+
+            if (!userHasAccess) {
+                return res.status(403).json({ status: 403, mensaje: 'Acceso denegado al recurso solicitado' });
+            }
+
+            return next(); // Devuelve el recurso si tiene acceso
+        });
     }
 }
