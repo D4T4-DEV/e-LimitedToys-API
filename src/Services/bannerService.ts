@@ -10,17 +10,17 @@ export const ObtenerBanners = async (): Promise<Respuesta> => {
     }
 }
 
-export const SubirBanner = async (ruta: string, nombreArchivo: string): Promise<Respuesta> => {
+export const SubirBanner = async (rutaRelativa: string): Promise<Respuesta> => {
     try {
-        return Models.SubirBanner(ruta, nombreArchivo);
+        return Models.SubirBanner(rutaRelativa);
     } catch (err) {
         throw err;
     }
 }
 
-export const BorrarBanner = async (idBanner: string, nameImagen: string): Promise<Respuesta> => {
+export const BorrarBanner = async (idBanner: string): Promise<Respuesta> => {
     try {
-        return Models.BorrarBanner(idBanner, nameImagen);
+        return Models.BorrarBanner(idBanner);
     } catch (err) {
         throw err;
     }

@@ -13,10 +13,17 @@ const MAX_FILE_SIZE: number = 10 * 1024 * 1024; // 10MB
 const fileFilter = (req: Request, file: Express.Multer.File, cb: FileFilterCallback) => {
 
     try {
-        const dataDecripty = DesencriptarDatos(req.body.datos_encriptados);
-        req.body.path = dataDecripty.path;
+        const { typePath, otherPath } = req.body;
+
+        if (!typePath || !otherPath) {
+            cb(new Error('No se enviaron los datos correspondientes')); // Rechazar el archivo
+        }
+
+        const path = typePath === "1" ? `Public/${otherPath}` : `Private/${otherPath}`;
+        req.body.path = path;
+
     } catch (err) {
-        cb(new Error('No se proporcionaron los datos en el formato correcto, verificalo'));
+        throw err;
     }
 
     // Verificar el tamaño del archivo antes de procesarlo
@@ -44,7 +51,7 @@ const storage = multer.diskStorage({
 
         // Obtencion de la subcarpeta por el body
 
-        const subcarpeta =  req.body.path|| 'default';
+        const subcarpeta = req.body.path || 'default';
         const uploadPath = path.join(DIR_UPLOAD!, subcarpeta); // Directorio en donde se guardara uploads/${subcarpeta}
 
         // Si no existe el directorio lo crea (evita problemas de inexistencia de directorios)

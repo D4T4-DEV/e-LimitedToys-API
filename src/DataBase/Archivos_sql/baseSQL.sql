@@ -67,8 +67,7 @@ CREATE TABLE IF NOT EXISTS Imagenes_productos (
 
 CREATE TABLE IF NOT EXISTS Banners (
 	id_banner INT PRIMARY KEY AUTO_INCREMENT,
-    banner_img LONGTEXT NOT NULL,
-    nombre_tipo LONGTEXT NOT NULL
+    banner_img LONGTEXT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS Inventario (

@@ -1,14 +1,12 @@
 import express from 'express';
 import { proccessDecryptDataMiddleware } from '../Middlewares/Decripty_recive_data';
 import * as Controllers from '../Controllers/bannerController';
-import upload from '../Multer/Configuracion_multer';
-import path from 'path';
 
 const router = express.Router();
 
 router.get('/get', Controllers.ObtenerBanners);
 router.post('/upload', proccessDecryptDataMiddleware, Controllers.SubirBanner);
-router.delete('/delete/:id_banner/:nameImagen', Controllers.BorrarBanner);
+router.delete('/delete/:id_banner', Controllers.BorrarBanner);
 
 
 export default router;
