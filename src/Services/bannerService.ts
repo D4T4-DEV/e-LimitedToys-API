@@ -10,9 +10,9 @@ export const ObtenerBanners = async (): Promise<Respuesta> => {
     }
 }
 
-export const SubirBanner = async (ruta: string, nombreArchivo: string): Promise<Respuesta> => {
+export const SubirBanner = async (rutaRelativa: string): Promise<Respuesta> => {
     try {
-        return Models.SubirBanner(ruta, nombreArchivo);
+        return Models.SubirBanner(rutaRelativa);
     } catch (err) {
         throw err;
     }

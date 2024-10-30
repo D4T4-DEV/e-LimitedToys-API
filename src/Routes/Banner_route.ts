@@ -7,7 +7,7 @@ import path from 'path';
 const router = express.Router();
 
 router.get('/get', Controllers.ObtenerBanners);
-router.post('/upload', proccessDecryptDataMiddleware, Controllers.SubirBanner);
+router.post('/upload', Controllers.SubirBanner);
 router.delete('/delete/:id_banner', Controllers.BorrarBanner);
 
 

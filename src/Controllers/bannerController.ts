@@ -1,12 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 import { Respuesta } from "../Interfaces/ResponseInterface";
 import * as Servicios from '../Services/bannerService';
-import path from 'path';
 
-// Toma de las variables del archivo env (desestructuracion)
-const { DIR_UPLOAD } = process.env;
-
-export const ObtenerBanners = async (req: Request, res: Response, next: NextFunction) => {
+export const ObtenerBanners = async (_req: Request, res: Response, next: NextFunction) => {
     try {
         const resultadoOperacion: Respuesta = await Servicios.ObtenerBanners();
         res.status(resultadoOperacion.status).json(resultadoOperacion)
@@ -18,22 +14,16 @@ export const ObtenerBanners = async (req: Request, res: Response, next: NextFunc
 
 export const SubirBanner = async (req: Request, res: Response, next: NextFunction) => {
 
-    const pathRelativo = req.body.datos.pathRelative;
+    const { pathRelativo } = req.body.datos;
 
-    if(!pathRelativo){
+    if (!pathRelativo) {
+        res.status(400).send({ status: 400, message: 'No se proporcionaron los datos necesarios' });
         return;
     }
 
     try {
-
-        // Usar split para dividir la cadena por '/' o '\\' esto para obtener los pedazos
-        const partesURL = pathRelativo.split(/[/\\]/); // Dividir por '/' o '\'
-
-        // Obtiene el ultimo elemento de la URL
-        const nombreArchivo = partesURL.pop(); 
-
         // Guardado
-        const resultadoOperacion = await Servicios.SubirBanner(pathRelativo, nombreArchivo);
+        const resultadoOperacion = await Servicios.SubirBanner(pathRelativo);
         res.status(resultadoOperacion.status).json(resultadoOperacion);
     } catch (error) {
         // Pasamos el error al middleware de errores
