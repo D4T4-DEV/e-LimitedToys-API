@@ -11,7 +11,8 @@ router.get('/obtener-datos/:user_ID', verifyTokenMiddleware, Controllers.Obtener
 
 
 router.put('/edit-direccion', verifyTokenMiddleware, Controllers.EditarDireccion);
-router.put('/edit-photo', verifyTokenMiddleware, Controllers.EditarFotoPerfil );
+router.put('/edit-photo', verifyTokenMiddleware, Controllers.EditarFotoPerfil);
+router.delete('/delete-photo', verifyTokenMiddleware, Controllers.EliminarFotoPerfil);
 router.put('/edit-nick', verifyTokenMiddleware, Controllers.EditarNick);
 
 
