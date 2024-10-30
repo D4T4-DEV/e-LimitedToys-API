@@ -13,7 +13,6 @@ const baseURL = `${PROTOCOL}://${URL_API}:${PORT}`;
 interface Banner extends RowDataPacket {
     id_banner: number;
     banner_img: string;
-    nombre_tipo: string;
 }
 
 export const ObtenerBanners = async (): Promise<Respuesta> => {
