@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import jwt, { JwtPayload } from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 import 'dotenv/config'; // configuración de dotenv
 import { Respuesta } from '../Interfaces/ResponseInterface';
 import { RequestPersonalizado } from '../Interfaces/Request/personalizateRequestUser';
