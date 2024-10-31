@@ -1,6 +1,7 @@
 import { getConnectionMySQL } from "../DataBase/connector";
 import { DataProduct } from "../Interfaces/ProductoInterface";
 import { Respuesta } from "../Interfaces/ResponseInterface";
+
 const { PORT_SERVER, URL, TYPE_CONN } = process.env;
 const PORT = PORT_SERVER || 3002;
 const URL_API = URL || 'localhost';

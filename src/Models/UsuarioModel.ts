@@ -7,7 +7,7 @@ import { EncriptarDatos } from "../Security/Encr_decp";
 import { CifrarContrasenia, CompararContrasenias } from "../Security/Pwd_process";
 import { GenerarToken } from "../Security/Tokens";
 
-const { PORT_SERVER, URL, DIR_BANNERS, TYPE_CONN } = process.env;
+const { PORT_SERVER, URL, TYPE_CONN } = process.env;
 const PORT = PORT_SERVER || 3002;
 const URL_API = URL || 'localhost';
 const PROTOCOL = TYPE_CONN || 'http';

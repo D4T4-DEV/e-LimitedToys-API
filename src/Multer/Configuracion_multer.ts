@@ -3,11 +3,10 @@ import path from 'path';
 import fs from 'fs';
 import { Request } from 'express';
 import { v4 as uuidv4 } from 'uuid';
-import { DesencriptarDatos } from '../Security/Encr_decp';
 
 const { DIR_UPLOAD } = process.env;
-
 const MAX_FILE_SIZE: number = 10 * 1024 * 1024; // 10MB
+
 
 // Filtro aplicado para operar antes de guardar o realizar acciones
 const fileFilter = (req: Request, file: Express.Multer.File, cb: FileFilterCallback) => {

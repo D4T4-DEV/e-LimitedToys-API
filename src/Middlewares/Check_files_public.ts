@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
 import path from 'path';
 import { verifyTokenMiddleware } from './Verify_token';
 import { verificarAccesoImgProfile } from '../Security/Check_acc_imgs';

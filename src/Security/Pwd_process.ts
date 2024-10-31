@@ -1,5 +1,4 @@
 import bcrypt from 'bcryptjs';
-import 'dotenv/config'; // configuración de dotenv
 const { PASSWORD_SALT_ROUNDS } = process.env;
 
 
