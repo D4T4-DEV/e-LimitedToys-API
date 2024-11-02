@@ -3,10 +3,11 @@ export interface DataProduct {
     nombre_producto?: string;
     marca?: string;
     descripcion?: string;
+    categoria?: string;
     imagenes_producto?: string;
     precio_producto?: number;
     precio_envio?: number;
     existencias?: number;
 }
 
-// export type DataProductOptionals = Partial<DataProduct>;
+export type DataProductOptionals = Partial<DataProduct>;
