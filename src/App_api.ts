@@ -1,9 +1,11 @@
 // importacion de express
 import express from 'express'
 import 'dotenv/config'; // configuración de dotenv
-// import cors from 'cors';  
-// // Medios de interes: https://aws.amazon.com/es/what-is/cross-origin-resource-sharing/#:~:text=CORS%20permite%20que%20el%20navegador,realizar%20cualquier%20transferencia%20de%20datos.
-// // https://chanduthedev.medium.com/setting-up-cors-in-nodejs-cc94e135c74f
+import cors, { CorsOptions } from 'cors';
+// Medios de interes: https://aws.amazon.com/es/what-is/cross-origin-resource-sharing/#:~:text=CORS%20permite%20que%20el%20navegador,realizar%20cualquier%20transferencia%20de%20datos.
+// https://chanduthedev.medium.com/setting-up-cors-in-nodejs-cc94e135c74f
+// https://expressjs.com/en/resources/middleware/cors.html
+
 
 // // importaciones personalizadas 
 import routes from './Routes/routes';
@@ -15,17 +17,23 @@ import { checkFileAccessMiddlware } from './Middlewares/Check_files_public';
 const API_APP = express();
 
 // Toma de las variables del archivo env (desestructuracion)
-const { PORT_SERVER, URL, DIR_UPLOAD, TYPE_CONN } = process.env;
+const { PORT_SERVER, URL, DIR_UPLOAD, TYPE_CONN, ALLOWED_ORIGINS, IS_PRODUCTION } = process.env;
 
-// // Middleware de cors
-// API_APP.use(cors());
+
+// Opciones de CORS
+const corsOptionsImgs: CorsOptions = {
+    origin: '*',
+    methods: ['GET'],
+    allowedHeaders: ['Authorization'],
+    credentials: false
+};
 
 // Middleware para poder obtener el contenido de las solicitudes POST en formularios
 API_APP.use(express.urlencoded({ extended: true })); // Aceptar Cadenas o arreglos
 API_APP.use(express.json()); // Entender datos en Formato JSON
 
 // Ruta para servir de imagenes
-API_APP.use(`/${DIR_UPLOAD}`, checkFileAccessMiddlware, express.static(path.join(__dirname, `../${DIR_UPLOAD}`)));
+API_APP.use(`/${DIR_UPLOAD}`, cors(corsOptionsImgs), checkFileAccessMiddlware, express.static(path.join(__dirname, `../${DIR_UPLOAD}`)));
 
 // Rutas de la API
 API_APP.use('/', routes);

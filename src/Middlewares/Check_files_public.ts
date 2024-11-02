@@ -5,7 +5,7 @@ import { verificarAccesoImgProfile } from '../Security/Check_acc_imgs';
 import { RequestPersonalizado } from '../Interfaces/Request/personalizateRequestUser';
 
 // Toma de las variables del archivo env (desestructuracion)
-const { DIR_UPLOAD } = process.env;
+const { DIR_UPLOAD, ALLOWED_DIRS } = process.env;
 
 export function checkFileAccessMiddlware(req: RequestPersonalizado, res: Response, next: NextFunction) {
 
@@ -13,12 +13,21 @@ export function checkFileAccessMiddlware(req: RequestPersonalizado, res: Respons
     const requestedFile = path.normalize(path.join(__dirname, `../../${DIR_UPLOAD}`, req.path));
 
     // Lista de directorios permitidos
-    const allowedDirectories = [
-        path.normalize(path.join(__dirname, `../../${DIR_UPLOAD}/Public`)),
-    ];
+    let allowedDirectories: string[];
+
+    // Tratamos de parsear el contenido a JSON para que sea leido
+    try {
+        allowedDirectories = JSON.parse(ALLOWED_DIRS || '[]'); 
+    } catch (err) {
+        throw new Error("El parseo a JSON fallo");
+        // allowedDirectories = []; // Si falla algo devolvemos un medio vacio (para que no falle)
+    }
+
+    // Normalización del path generando una lista de directorios permitidos
+    const normalizedAllowedDirs = allowedDirectories.map(dir => path.normalize(path.join(__dirname, `../../${dir}`)));
 
     // Verificar si el archivo solicitado es publico o no
-    const isAllowed = allowedDirectories.some((allowedDir) => requestedFile.startsWith(allowedDir));
+    const isAllowed = normalizedAllowedDirs.some((allowedDir) => requestedFile.startsWith(allowedDir));
 
     if (isAllowed) {
         // Continuar con el siguiente middleware (autoriza el siguiente)
