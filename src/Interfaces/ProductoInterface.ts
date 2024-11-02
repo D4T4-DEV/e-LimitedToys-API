@@ -1,7 +1,6 @@
 export interface DataProduct {
     id_Product?: string;
     nombre_producto?: string;
-    categoria?: string;
     marca?: string;
     descripcion?: string;
     imagenes_producto?: string;
@@ -10,4 +9,4 @@ export interface DataProduct {
     existencias?: number;
 }
 
-export type DataProductOptionals = Partial<DataProduct>;
+// export type DataProductOptionals = Partial<DataProduct>;

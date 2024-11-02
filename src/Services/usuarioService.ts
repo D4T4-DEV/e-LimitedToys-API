@@ -2,7 +2,7 @@ import { Respuesta } from "../Interfaces/ResponseInterface";
 import { UserData } from "../Interfaces/UsuarioInterface";
 import *as Models from '../Models/UsuarioModel';
 
-export const RegistrarUsuario = async (data: any): Promise<Respuesta> => {
+export const RegistrarUsuario = async (data: UserData): Promise<Respuesta> => {
     try {
         return Models.RegistrarUsuario(data);
     } catch (err) {
@@ -10,7 +10,7 @@ export const RegistrarUsuario = async (data: any): Promise<Respuesta> => {
     }
 }
 
-export const IniciarSesion = async (data: any): Promise<Respuesta> => {
+export const IniciarSesion = async (data: UserData): Promise<Respuesta> => {
     try {
         return Models.IniciarSesion(data);
     } catch (err) {
@@ -18,7 +18,7 @@ export const IniciarSesion = async (data: any): Promise<Respuesta> => {
     }
 }
 
-export const EditarDireccion = async (data: any): Promise<Respuesta> => {
+export const EditarDireccion = async (data: UserData): Promise<Respuesta> => {
     try {
         return Models.EditarDireccion(data);
     } catch (err) {
@@ -26,7 +26,7 @@ export const EditarDireccion = async (data: any): Promise<Respuesta> => {
     }
 }
 
-export const EditarNick = async (data: any): Promise<Respuesta> => {
+export const EditarNick = async (data: UserData): Promise<Respuesta> => {
     try {
         return Models.EditarNick(data);
     } catch (err) {
@@ -34,7 +34,7 @@ export const EditarNick = async (data: any): Promise<Respuesta> => {
     }
 }
 
-export const EditarFotoPerfil = async (data: any): Promise<Respuesta> => {
+export const EditarFotoPerfil = async (data: UserData): Promise<Respuesta> => {
     try {
         return Models.EditarFotoPerfil(data);
     } catch (err) {
@@ -42,7 +42,7 @@ export const EditarFotoPerfil = async (data: any): Promise<Respuesta> => {
     }
 }
 
-export const EliminarFotoPerfil = async (data: any): Promise<Respuesta> => {
+export const EliminarFotoPerfil = async (data: UserData): Promise<Respuesta> => {
     try {
         return Models.EliminarFotoPerfil(data);
     } catch (err) {

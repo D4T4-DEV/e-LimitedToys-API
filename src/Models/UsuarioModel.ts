@@ -22,8 +22,8 @@ export const RegistrarUsuario = async (data: UserData): Promise<Respuesta> => {
         apellidos,
         email,
         password, // Contraseña plana o hasheada
-        nickname,
-        imagenPerfil,
+        nick,
+        prof_pic,
         calle,
         referencia,
         pais,
@@ -45,8 +45,8 @@ export const RegistrarUsuario = async (data: UserData): Promise<Respuesta> => {
             apellidos,
             email,
             pwd_hash,
-            nickname,
-            imagenPerfil,
+            nick,
+            prof_pic,
             calle,
             referencia,
             pais,
@@ -60,7 +60,7 @@ export const RegistrarUsuario = async (data: UserData): Promise<Respuesta> => {
             SELECT @mensaje AS mensaje;
         `);
 
-        const mensaje = mensajeResult[0]?.mensaje;
+        const mensaje: string = mensajeResult[0]?.mensaje;
         if (mensaje !== 'El usuario existe') {
             return { status: 200, message: 'Se creo correctamente el usuario' };
         }
@@ -94,7 +94,7 @@ export const IniciarSesion = async (data: UserData): Promise<Respuesta> => {
             SELECT @mensaje AS mensaje;
         `);
 
-        const mensaje = mensajeResult[0]?.mensaje;
+        const mensaje: string = mensajeResult[0]?.mensaje;
 
         if (mensaje === 'Usuario no encontrado') {
             return { status: 404, message: 'No se encontro usuario' };
@@ -105,12 +105,12 @@ export const IniciarSesion = async (data: UserData): Promise<Respuesta> => {
         }
 
         if (result.length > 0) {
-            const usuario = result[0][0]; // Tomamos el resultado
+            const usuario: UserData = result[0][0]; // Tomamos el resultado
 
             // Obtenemos los datos que viene del usuario (consulta mysql)
             const { id_usuario, nick, prof_pic, psw_hash } = usuario;
 
-            const rsulCompare = await CompararContrasenias(password!, psw_hash);
+            const rsulCompare = await CompararContrasenias(password!, psw_hash!);
             if (rsulCompare) {
 
                 // Generamos su token
@@ -147,7 +147,7 @@ export const IniciarSesion = async (data: UserData): Promise<Respuesta> => {
 export const EditarDireccion = async (data: UserData): Promise<Respuesta> => {
     // Obtencion de las variables de la interfaz
     const {
-        user_ID,
+        id_usuario,
         calle,
         referencia,
         pais,
@@ -161,13 +161,15 @@ export const EditarDireccion = async (data: UserData): Promise<Respuesta> => {
     try {
         const [result]: any[] = await conn_MYSQL.query(`
             CALL ModificarDireccion(?, ?, ?, ?, ?, ?, ?, @mensaje );
-        `, [user_ID, calle, referencia, pais, ciudad, colonia, codigoPostal]);
+        `, [id_usuario, calle, referencia, pais, ciudad, colonia, codigoPostal]);
 
         const [mensajeResult]: any[] = await conn_MYSQL.query(`
             SELECT @mensaje AS mensaje;
         `);
 
-        if (mensajeResult[0].mensaje != 'Se modifico la direccion') {
+        const msg: string = mensajeResult[0].mensaje;
+
+        if (msg != 'Se modifico la direccion') {
             return { status: 404, message: mensajeResult };
         }
         return { status: 200, message: `Modifique la direccion` };
@@ -184,8 +186,8 @@ export const EditarDireccion = async (data: UserData): Promise<Respuesta> => {
 export const EditarNick = async (data: UserData): Promise<Respuesta> => {
     // Obtencion de las variables de la interfaz
     const {
-        nickname,
-        user_ID
+        id_usuario,
+        nick
     } = data;
 
     const conn_MYSQL = await getConnectionMySQL();
@@ -193,7 +195,7 @@ export const EditarNick = async (data: UserData): Promise<Respuesta> => {
     try {
         const [result]: any[] = await conn_MYSQL.query(`
             UPDATE Usuarios SET nick = (?) WHERE id_usuario = (?);
-        `, [nickname, user_ID]);
+        `, [nick, id_usuario]);
 
         return { status: 200, message: `Modifique el nickname del usuario` };
 
@@ -209,21 +211,21 @@ export const EditarNick = async (data: UserData): Promise<Respuesta> => {
 export const EditarFotoPerfil = async (data: UserData): Promise<Respuesta> => {
     // Obtencion de las variables de la interfaz
     const {
-        imagenPerfil,
-        user_ID
+        id_usuario,
+        prof_pic
     } = data;
 
     const conn_MYSQL = await getConnectionMySQL();
 
     try {
-        const [relativePathAnt]: any[] = await conn_MYSQL.query(`SELECT prof_pic FROM Usuarios WHERE id_usuario = (?)`, [user_ID]);
+        const [relativePathAnt]: any[] = await conn_MYSQL.query(`SELECT prof_pic FROM Usuarios WHERE id_usuario = (?)`, [id_usuario]);
         const rutaImagen = relativePathAnt[0].prof_pic;
         const nombreImagen = path.basename(rutaImagen);
 
         if (!rutaImagen) {
             const [result]: any[] = await conn_MYSQL.query(`
                 UPDATE Usuarios SET prof_pic = (?) WHERE id_usuario = (?);
-            `, [imagenPerfil, user_ID]);
+            `, [prof_pic, id_usuario]);
 
             if (result.affectedRows === 0) {
                 return { status: 500, message: 'No se subio la imagen, porfavor intentelo mas tarde' };
@@ -231,7 +233,7 @@ export const EditarFotoPerfil = async (data: UserData): Promise<Respuesta> => {
         } else {
             const [result]: any[] = await conn_MYSQL.query(`
                 UPDATE Usuarios SET prof_pic = (?) WHERE id_usuario = (?);
-            `, [imagenPerfil, user_ID]);
+            `, [prof_pic, id_usuario]);
 
             if (result.affectedRows === 0) {
                 return { status: 500, message: 'No se subio la imagen, porfavor intentelo mas tarde' };
@@ -267,18 +269,18 @@ export const EditarFotoPerfil = async (data: UserData): Promise<Respuesta> => {
 
 export const EliminarFotoPerfil = async (data: UserData): Promise<Respuesta> => {
     // Obtencion de las variables de la interfaz
-    const { user_ID } = data;
+    const { id_usuario } = data;
 
     const conn_MYSQL = await getConnectionMySQL();
 
     try {
-        const [relativePathAnt]: any[] = await conn_MYSQL.query(`SELECT prof_pic FROM Usuarios WHERE id_usuario = (?)`, [user_ID]);
-        const rutaImagen = relativePathAnt[0].prof_pic;
-        const nombreImagen = path.basename(rutaImagen);
+        const [relativePathAnt]: any[] = await conn_MYSQL.query(`SELECT prof_pic FROM Usuarios WHERE id_usuario = (?)`, [id_usuario]);
+        const rutaImagen: string = relativePathAnt[0].prof_pic;
+        const nombreImagen: string = path.basename(rutaImagen);
 
         const [result]: any[] = await conn_MYSQL.query(`
             UPDATE Usuarios SET prof_pic = NULL WHERE id_usuario = (?);
-        `, [user_ID]);
+        `, [id_usuario]);
 
         if (result.affectedRows === 0) {
             return { status: 500, message: 'No se elimino la imagen, porfavor intentelo mas tarde' };
@@ -311,19 +313,19 @@ export const EliminarFotoPerfil = async (data: UserData): Promise<Respuesta> => 
 
 export const EliminarUsuario = async (data: UserData): Promise<Respuesta> => {
     // Obtencion de las variables de la interfaz
-    const { user_ID } = data;
+    const { id_usuario } = data;
 
     const conn_MYSQL = await getConnectionMySQL();
 
     try {
 
         // Consulta por el procedimiento almacenado
-        const [result] = await conn_MYSQL.query(`CALL BorrarCuentaUsuario(?, @mensaje);`, [user_ID]);
+        const [result] = await conn_MYSQL.query(`CALL BorrarCuentaUsuario(?, @mensaje);`, [id_usuario]);
 
         // Obtencion del mensaje generado por el proceso
         const [mensajeResult]: any[] = await conn_MYSQL.query(`SELECT @mensaje AS mensaje;`);
 
-        const mensaje = mensajeResult[0]?.mensaje;
+        const mensaje: string = mensajeResult[0]?.mensaje;
 
         if (mensaje !== 'El usuario no existe') {
             return { status: 200, message: 'Se pauso el usuario' };
@@ -341,13 +343,13 @@ export const EliminarUsuario = async (data: UserData): Promise<Respuesta> => {
 
 export const ObtenerDatosUsuario = async (data: UserData): Promise<Respuesta> => {
     // Obtencion de las variables de la interfaz
-    const { user_ID } = data;
+    const { id_usuario } = data;
 
     const conn_MYSQL = await getConnectionMySQL();
 
     try {
 
-        const [result]: any = await conn_MYSQL.query(`CALL ObtenerDatosUsuario( ? )`, [user_ID]);
+        const [result]: any[] = await conn_MYSQL.query(`CALL ObtenerDatosUsuario( ? )`, [id_usuario]);
 
         // Tomamos lo que viene de la consulta, o bien asignamos un arreglo vacio
         const userData = result[0] || [];
@@ -370,7 +372,7 @@ export const ObtenerImgUsuario = async (user_ID: string): Promise<string | undef
     const conn_MYSQL = await getConnectionMySQL();
 
     try {
-        const [result]: any = await conn_MYSQL.query(`SELECT prof_pic FROM usuarios WHERE id_usuario = ?`, [user_ID]);
+        const [result]: any[] = await conn_MYSQL.query(`SELECT prof_pic FROM usuarios WHERE id_usuario = ?`, [user_ID]);
 
         // Verificamos si la respuesta no esta vacia y contenga el campo esperado
         if (result.length > 0 && result[0].prof_pic) {

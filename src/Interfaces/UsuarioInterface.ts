@@ -1,15 +1,16 @@
 export interface UserData {
-    user_ID?: string;
+    id_usuario?: string;
     nombres?: string;
     apellidos?: string;
     email?: string;
     password?: string;
-    nickname?: string;
-    imagenPerfil?: string;
+    psw_hash?: string;
+    nick?: string;
+    prof_pic?: string;
     calle?: string;
-    referencia?: string;
-    pais?: string;
-    ciudad?: string;
     colonia?: string;
+    ciudad?: string;
+    pais?: string;
     codigoPostal?: number;
+    referencia?: string;
 }

@@ -16,7 +16,6 @@ export const AniadirProducto = async (data: DataProduct): Promise<Respuesta> => 
     // Obtencion de las variables de la interfaz
     const {
         nombre_producto,
-        categoria,
         marca,
         descripcion,
         imagenes_producto,
@@ -43,7 +42,6 @@ export const EditarProducto = async (data: DataProduct): Promise<Respuesta> => {
     // Obtencion de las variables de la interfaz
     const {
         nombre_producto,
-        categoria,
         marca,
         descripcion,
         imagenes_producto,
@@ -70,7 +68,6 @@ export const EliminarProducto = async (data: DataProduct): Promise<Respuesta> =>
     // Obtencion de las variables de la interfaz
     const {
         nombre_producto,
-        categoria,
         marca,
         descripcion,
         imagenes_producto,
