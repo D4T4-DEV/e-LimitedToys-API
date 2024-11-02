@@ -7,7 +7,7 @@ import cors, { CorsOptions } from 'cors';
 // https://expressjs.com/en/resources/middleware/cors.html
 
 
-// // importaciones personalizadas 
+// importaciones personalizadas 
 import routes from './Routes/routes';
 import { handleErrorMiddleware } from './Middlewares/HandleErrosMiddleware';
 import path from 'path';
@@ -17,7 +17,7 @@ import { checkFileAccessMiddlware } from './Middlewares/Check_files_public';
 const API_APP = express();
 
 // Toma de las variables del archivo env (desestructuracion)
-const { PORT_SERVER, URL, DIR_UPLOAD, TYPE_CONN, ALLOWED_ORIGINS, IS_PRODUCTION } = process.env;
+const { PORT_SERVER, URL, DIR_UPLOAD, TYPE_CONN } = process.env;
 
 
 // Opciones de CORS
