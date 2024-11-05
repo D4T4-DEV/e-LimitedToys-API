@@ -8,6 +8,7 @@ import StatusServer from './Status_Server'; // Saber el estado del server
 import Productos from './Products_route';
 import Usuarios from './User_route';
 import ShoppingCart from './Carrito_route';
+import ProcesoCompra from './ProcesoCompra_route';
 import Banners from './Banner_route';
 import SubirImagenesServer from './SubirImagenesServer';
 import { CorsOptions } from 'cors';
@@ -39,7 +40,7 @@ Router.use('/subir-img', cors(corsOptionsGeneral), SubirImagenesServer);
 Router.use('/productos', cors(corsOptionsGeneral), Productos);
 Router.use('/banner', cors(corsOptionsGeneral), Banners);
 Router.use('/carrito', cors(corsOptionsGeneral), ShoppingCart);
-// // Router.use('/proceso-de-compra', cors(corsOptionsGeneral), );
+Router.use('/proceso-de-compra', cors(corsOptionsGeneral), ProcesoCompra);
 Router.use('/usuarios', cors(corsOptionsGeneral), Usuarios);
 
 
