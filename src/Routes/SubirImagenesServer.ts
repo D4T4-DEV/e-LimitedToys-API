@@ -2,6 +2,7 @@ import express, { NextFunction, Request, Response  } from 'express';
 import path from 'path';
 import upload from '../Multer/Configuracion_multer';
 const Router = express.Router();
+
 // Toma de las variables del archivo env (desestructuracion)
 const { DIR_UPLOAD } = process.env;
 

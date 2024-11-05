@@ -1,5 +1,4 @@
 import express from 'express';
-import { proccessDecryptDataMiddleware } from '../Middlewares/Decripty_recive_data';
 import * as Controllers from '../Controllers/carritoController';
 import { verifyTokenMiddleware } from '../Middlewares/Verify_token';
 

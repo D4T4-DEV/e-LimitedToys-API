@@ -1,9 +1,9 @@
 export interface DataProduct {
     id_Product?: string;
     nombre_producto?: string;
-    categoria?: string;
     marca?: string;
     descripcion?: string;
+    categoria?: string;
     imagenes_producto?: string;
     precio_producto?: number;
     precio_envio?: number;

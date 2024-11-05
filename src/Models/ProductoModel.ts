@@ -1,6 +1,7 @@
 import { getConnectionMySQL } from "../DataBase/connector";
 import { DataProduct } from "../Interfaces/ProductoInterface";
 import { Respuesta } from "../Interfaces/ResponseInterface";
+
 const { PORT_SERVER, URL, TYPE_CONN } = process.env;
 const PORT = PORT_SERVER || 3002;
 const URL_API = URL || 'localhost';
@@ -15,7 +16,6 @@ export const AniadirProducto = async (data: DataProduct): Promise<Respuesta> => 
     // Obtencion de las variables de la interfaz
     const {
         nombre_producto,
-        categoria,
         marca,
         descripcion,
         imagenes_producto,
@@ -42,7 +42,6 @@ export const EditarProducto = async (data: DataProduct): Promise<Respuesta> => {
     // Obtencion de las variables de la interfaz
     const {
         nombre_producto,
-        categoria,
         marca,
         descripcion,
         imagenes_producto,
@@ -69,7 +68,6 @@ export const EliminarProducto = async (data: DataProduct): Promise<Respuesta> =>
     // Obtencion de las variables de la interfaz
     const {
         nombre_producto,
-        categoria,
         marca,
         descripcion,
         imagenes_producto,
@@ -95,11 +93,11 @@ export const EliminarProducto = async (data: DataProduct): Promise<Respuesta> =>
     👆 Hasta aqui llegan las posibles implementaciones (aplica para sus servicios, controladores y modelos)
 */
 
-export const ObtenerProductos = async (data: string): Promise<Respuesta> => {
+export const ObtenerProductos = async (indice_catalogo: string): Promise<Respuesta> => {
     const conn_MYSQL = await getConnectionMySQL();
 
     try {
-        const [result]: any = await conn_MYSQL.query(`CALL ObtenerProductos( ? )`, [data]);
+        const [result]: any = await conn_MYSQL.query(`CALL ObtenerProductos( ? )`, [indice_catalogo]);
 
         // Tomamos lo que viene de la consulta, o bien asignamos un arreglo vacio
         const productosData: DataProduct[] = result[0] || [];
@@ -125,7 +123,7 @@ export const ObtenerProductos = async (data: string): Promise<Respuesta> => {
                 };
             });
 
-            return { status: 200, message: `Se ha devuelto los 15 productos del índice ${data}`, data: { DataProductos } };
+            return { status: 200, message: `Se ha devuelto los 15 productos del índice ${indice_catalogo}`, data: { DataProductos } };
         }
 
         return { status: 404, message: `No hay productos` };
@@ -138,12 +136,12 @@ export const ObtenerProductos = async (data: string): Promise<Respuesta> => {
     }
 };
 
-export const ObtenerProductoID = async (data: string): Promise<Respuesta> => {
+export const ObtenerProductoID = async (id_producto: string): Promise<Respuesta> => {
     const conn_MYSQL = await getConnectionMySQL();
 
 
     try {
-        const [result]: any[] = await conn_MYSQL.query(`CALL ObtenerProductoPorID( ? )`, [data]);
+        const [result]: any[] = await conn_MYSQL.query(`CALL ObtenerProductoPorID( ? )`, [id_producto]);
 
         // Tomamos lo que viene de la consulta, o bien asignamos un arreglo vacio
         const productosData: DataProduct[] = result[0] || [];
@@ -170,7 +168,7 @@ export const ObtenerProductoID = async (data: string): Promise<Respuesta> => {
             return { status: 200, message: `Se ha devuelto los datos del producto`, data: { DataProductos } };
         }
 
-        return { status: 404, message: `No existe un producto con id ${data}` };
+        return { status: 404, message: `No existe un producto con id ${id_producto}` };
     } catch (error) {
         const customError = new Error(`ObtenerProductoID() modelo ${error}`);
         (customError as any).statusCode = 500;

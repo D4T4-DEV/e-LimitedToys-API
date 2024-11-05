@@ -53,7 +53,7 @@ export const EliminarUsuario = async (req: RequestPersonalizado, res: Response, 
     }
 
     try {
-        const resultadoOperacion: Respuesta = await Servicios.EliminarUsuario({ user_ID: user_ID });
+        const resultadoOperacion: Respuesta = await Servicios.EliminarUsuario({ id_usuario: user_ID });
         res.status(resultadoOperacion.status).json(resultadoOperacion)
     } catch (error) {
         // Pasamos el error al middleware de errores
@@ -76,7 +76,7 @@ export const ObtenerDatosUsuario = async (req: RequestPersonalizado, res: Respon
     }
 
     try {
-        const resultadoOperacion: Respuesta = await Servicios.ObtenerDatosUsuario({ user_ID: user_ID });
+        const resultadoOperacion: Respuesta = await Servicios.ObtenerDatosUsuario({ id_usuario: user_ID });
         res.status(resultadoOperacion.status).json(resultadoOperacion)
     } catch (error) {
         // Pasamos el error al middleware de errores

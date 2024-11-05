@@ -4,7 +4,7 @@ import { Respuesta } from "../Interfaces/ResponseInterface";
 import path from "path";
 import fs from 'fs';
 
-const { PORT_SERVER, URL, DIR_BANNERS, TYPE_CONN } = process.env;
+const { PORT_SERVER, URL, TYPE_CONN } = process.env;
 const PORT = PORT_SERVER || 3002;
 const URL_API = URL || 'localhost';
 const PROTOCOL = TYPE_CONN || 'http';
