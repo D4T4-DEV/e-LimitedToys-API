@@ -83,6 +83,8 @@ CREATE TABLE IF NOT EXISTS Ventas (
 	id_hist INT PRIMARY KEY AUTO_INCREMENT,
     id_usuario INT,
     id_producto INT,
+    precio_ind DECIMAL(10,2),
+    precio_env DECIMAL(10,2),
     cantidad_comprada INT,
     fecha_compra TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario),
