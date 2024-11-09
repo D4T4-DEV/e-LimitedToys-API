@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 const { DIR_UPLOAD } = process.env;
 const MAX_FILE_SIZE: number = 10 * 1024 * 1024; // 10MB
+const TiposAceptados = /jpeg|jpg|png|webp|gif/; // Tipos de archivos aceptados
 
 
 // Filtro aplicado para operar antes de guardar o realizar acciones
@@ -29,8 +30,6 @@ const fileFilter = (req: Request, file: Express.Multer.File, cb: FileFilterCallb
     if (file.size > MAX_FILE_SIZE) {
         cb(new Error('Solo se permiten archivos de maximo 10MB'));
     }
-
-    const TiposAceptados = /jpeg|jpg|png|webp|gif/; // Tipos de archivos aceptados
 
     // test verifica si se cumple un patron dado un regex (TiposAceptados) y si cumple devuelve TRUE
     // extname Devuelve la extensión de la ruta, desde el último '.' hasta el final de la cadena en la última parte del camino. Si no hay '.' en la última parte de la ruta o el primer carácter es '.', luego devuelve una cadena vacía.
