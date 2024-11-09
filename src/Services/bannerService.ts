@@ -9,7 +9,8 @@ export const ObtenerBanners = async (): Promise<Respuesta> => {
         throw err;
     }
 }
-
+/*
+// POSIBLES IMPLEMENTACIÓNES DESPUES
 export const SubirBanner = async (rutaRelativa: string): Promise<Respuesta> => {
     try {
         return Models.SubirBanner(rutaRelativa);
@@ -25,3 +26,5 @@ export const BorrarBanner = async (idBanner: string): Promise<Respuesta> => {
         throw err;
     }
 }
+
+*/

@@ -12,6 +12,8 @@ export const ObtenerBanners = async (_req: Request, res: Response, next: NextFun
     }
 }
 
+/*
+// POSIBLES IMPLEMENTACIÓNES DESPUES
 export const SubirBanner = async (req: Request, res: Response, next: NextFunction) => {
 
     const { pathRelativo } = req.body.datos;
@@ -43,3 +45,5 @@ export const BorrarBanner = async (req: Request, res: Response, next: NextFuncti
         next(error);
     }
 }
+
+*/
