@@ -1,15 +1,22 @@
 import { getConnectionMySQL } from "../DataBase/connector";
+import { DataCarrito } from "../Interfaces/CarrritoInterface";
 import { Respuesta } from "../Interfaces/ResponseInterface";
 
-
-export const GenerarCompra = async (data: any): Promise<Respuesta> => {
+export const GenerarCompra = async (datos: DataCarrito): Promise<Respuesta> => {
+    const { id_Usuario } = datos;
     const conn_MYSQL = await getConnectionMySQL();
 
     try {
-        const [result]: any[]= await conn_MYSQL.query(``);
+        const [result]: any[] = await conn_MYSQL.query(`CALL ProcesarCompra(?, @mensaje)`, [id_Usuario]);
+        const datosResultado = result[0];
 
-        return { status: 200, message: 'Compra realizada exitosamente'};
-
+        const [mensajeResult]: any[] = await conn_MYSQL.query(`SELECT @mensaje AS mensaje;`);
+        const mensaje = mensajeResult[0]?.mensaje;
+        
+        if (mensaje) {
+            return { status: 200, message: mensaje };
+        }
+        return { status: 401, message: 'El carrito tiene productos que sobrepasan el inventario', data: datosResultado };
     } catch (error) {
         const customError = new Error(`GenerarCompra() modelo ${error}`);
         (customError as any).statusCode = 500;
