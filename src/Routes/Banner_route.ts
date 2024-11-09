@@ -5,8 +5,10 @@ import * as Controllers from '../Controllers/bannerController';
 const router = express.Router();
 
 router.get('/get', Controllers.ObtenerBanners);
+
+/*
+// ASPECTOS A USAR POR OTRA IMPLEMETACIÓN FUTURA
 router.post('/upload', proccessDecryptDataMiddleware, Controllers.SubirBanner);
 router.delete('/delete/:id_banner', Controllers.BorrarBanner);
-
-
+*/
 export default router;

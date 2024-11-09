@@ -43,6 +43,8 @@ export const ObtenerBanners = async (): Promise<Respuesta> => {
     }
 };
 
+/*
+// POSIBLES IMPLEMENTACIÓNES DESPUES
 export const SubirBanner = async (rutaRelativa: string): Promise<Respuesta> => {
     const conn_MYSQL = await getConnectionMySQL();
 
@@ -105,3 +107,4 @@ export const BorrarBanner = async (idBanner: string): Promise<Respuesta> => {
         conn_MYSQL.release();
     }
 }
+*/
