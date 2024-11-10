@@ -20,7 +20,7 @@ BEGIN
         Inventario i ON p.id_producto = i.id_producto
     WHERE 
         p.id_producto = productoID -- Buscamos por ID y por que cumpla que
-        AND p.is_product_paused = FALSE -- mo sea un producto pausado (sin stock)
+        -- AND p.is_product_paused = FALSE -- mo sea un producto pausado (sin stock), no aplicamos esto porque puede ser un historial de compra
     GROUP BY 
         p.id_producto, p.nombre, p.descripcion, p.marca, i.precio_producto, i.precio_envio, i.existencia;
 
