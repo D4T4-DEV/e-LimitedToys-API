@@ -1,18 +1,18 @@
 import { getConnectionMySQL } from "../DataBase/connector";
-import { DataCarrito } from "../Interfaces/CarrritoInterface";
+import { DataCompra } from "../Interfaces/CompraInterface";
 import { Respuesta } from "../Interfaces/ResponseInterface";
 
-export const GenerarCompra = async (datos: DataCarrito): Promise<Respuesta> => {
-    const { id_Usuario } = datos;
+export const GenerarCompra = async (datos: DataCompra): Promise<Respuesta> => {
+    const { id_usuario } = datos;
     const conn_MYSQL = await getConnectionMySQL();
 
     try {
-        const [result]: any[] = await conn_MYSQL.query(`CALL ProcesarCompra(?, @mensaje)`, [id_Usuario]);
+        const [result]: any[] = await conn_MYSQL.query(`CALL ProcesarCompra(?, @mensaje)`, [id_usuario]);
         const datosResultado = result[0];
 
         const [mensajeResult]: any[] = await conn_MYSQL.query(`SELECT @mensaje AS mensaje;`);
         const mensaje = mensajeResult[0]?.mensaje;
-        
+
         if (mensaje) {
             return { status: 200, message: mensaje };
         }

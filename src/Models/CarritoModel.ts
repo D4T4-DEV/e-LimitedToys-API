@@ -13,8 +13,8 @@ export const AniadirProductoCarrito = async (data: DataCarrito): Promise<Respues
 
     // Obtencion de las variables de la interfaz
     const {
-        id_Usuario,
-        id_Producto,
+        id_usuario,
+        id_producto,
         existencias
     } = data;
 
@@ -23,7 +23,7 @@ export const AniadirProductoCarrito = async (data: DataCarrito): Promise<Respues
     try {
 
         const [result]: any[] = await conn_MYSQL.query(`CALL Agregar_modificar_carrito(?, ?, ?, @mensaje)`,
-            [id_Usuario, id_Producto, (existencias! < 0 ? 0 : existencias)]);
+            [id_usuario, id_producto, (existencias! < 0 ? 0 : existencias)]);
 
         const [mensajeResult]: any[] = await conn_MYSQL.query(`SELECT @mensaje AS mensaje;`);
 
@@ -48,8 +48,8 @@ export const EditarProductoCarrito = async (data: DataCarrito): Promise<Respuest
 
     // Obtencion de las variables de la interfaz
     const {
-        id_Usuario,
-        id_Producto,
+        id_usuario,
+        id_producto,
         existencias
     } = data;
 
@@ -58,7 +58,7 @@ export const EditarProductoCarrito = async (data: DataCarrito): Promise<Respuest
     try {
 
         const [result]: any[] = await conn_MYSQL.query(`CALL Agregar_modificar_carrito(?, ?, ?, @mensaje)`,
-            [id_Usuario, id_Producto, (existencias! < 0 ? 0 : existencias)]);
+            [id_usuario, id_producto, (existencias! < 0 ? 0 : existencias)]);
 
         const [mensajeResult]: any[] = await conn_MYSQL.query(`SELECT @mensaje AS mensaje;`);
 
@@ -82,8 +82,8 @@ export const EliminarProductoCarrito = async (data: DataCarrito): Promise<Respue
 
     // Obtencion de las variables de la interfaz
     const {
-        id_Usuario,
-        id_Producto
+        id_usuario,
+        id_producto
     } = data;
 
 
@@ -91,7 +91,8 @@ export const EliminarProductoCarrito = async (data: DataCarrito): Promise<Respue
 
     try {
 
-        const [result]: any[] = await conn_MYSQL.query(`DELETE FROM carrito WHERE (id_usuario = ? AND id_producto = ?);`, [id_Usuario, id_Producto]);
+        const [result]: any[] = await conn_MYSQL.query(`DELETE FROM carrito WHERE (id_usuario = ? AND id_producto = ?);`, 
+            [id_usuario, id_producto]);
 
         if (result.affectedRows > 0) {
             return { status: 200, message: 'Se ha eliminado el producto correctamente' };

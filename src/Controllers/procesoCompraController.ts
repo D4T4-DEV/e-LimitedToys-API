@@ -2,17 +2,21 @@ import { NextFunction, Request, Response } from 'express';
 import { Respuesta } from '../Interfaces/ResponseInterface';
 import * as Servicios from '../Services/procesoCompraService';
 import { RequestPersonalizado } from '../Interfaces/Request/personalizateRequestUser';
+import { DataCompraSchema } from '../Interfaces/CompraInterface';
 
 export const GenerarCompra = async (req: RequestPersonalizado, res: Response, next: NextFunction) => {
     const { datos } = req.body;
-    const idToken = req.usuarioId;
 
-    if (!datos) {
-        res.status(400).json({ status: 400, message: 'No proporcionaste los datos' });
+    // Validacion de datos por ZOD
+    const resultValidateData = DataCompraSchema.safeParse(datos);
+
+    if (!resultValidateData.success) {
+        res.status(400).json({ status: 401, message: 'No se enviaron los datos correctos' });
         return;
     }
 
-    if (datos.id_Usuario != idToken) {
+    const idToken = req.usuarioId;
+    if (datos.id_usuario != idToken) {
         res.status(401).json({ status: 401, message: 'Operacion no valida para este usuario' });
         return;
     }
