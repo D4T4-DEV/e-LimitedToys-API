@@ -9,7 +9,7 @@ export interface DataProduct {
     imagenes_producto?: string;
     precio_producto?: number;
     precio_envio?: number;
-    existencias?: number;
+    existencia?: number;
 }
 
 export const DataProductSchema = z.object({
@@ -21,7 +21,7 @@ export const DataProductSchema = z.object({
     imagenes_producto: z.string(),
     precio_producto: z.number(),
     precio_envio: z.number(),
-    existencias: z.number(),
+    existencia: z.number(),
 });
 
 export const GetProductForIDSchema = DataProductSchema.pick({}).extend({

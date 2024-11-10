@@ -105,7 +105,7 @@ export const ObtenerProductos = async (indice_catalogo: string): Promise<Respues
         if (productosData.length > 0) {
             // Procesamos cada producto en productosData
             const DataProductos = productosData.map((producto: DataProduct) => {
-                const { nombre_producto, descripcion, marca, imagenes_producto, precio_producto, precio_envio, existencias } = producto;
+                const { nombre_producto, descripcion, marca, imagenes_producto, precio_producto, precio_envio, existencia } = producto;
 
                 // Division de `imagenes_producto` y agregacion de URL base a cada una
                 const imagenesConURL = imagenes_producto!
@@ -119,7 +119,7 @@ export const ObtenerProductos = async (indice_catalogo: string): Promise<Respues
                     imagenes_producto: imagenesConURL,
                     precio_producto,
                     precio_envio,
-                    existencias
+                    existencia
                 };
             });
 
@@ -148,7 +148,7 @@ export const ObtenerProductoID = async (id_producto: string): Promise<Respuesta>
 
         if (Array.isArray(productosData) && productosData.length > 0) {
             const DataProductos = productosData.map((producto: DataProduct) => {
-                const { nombre_producto, descripcion, marca, imagenes_producto, precio_producto, precio_envio, existencias } = producto;
+                const { nombre_producto, descripcion, marca, imagenes_producto, precio_producto, precio_envio, existencia } = producto;
 
                 // Division de `imagenes_producto` y agregacion de URL base a cada una
                 const imagenesConURL = imagenes_producto!
@@ -162,7 +162,7 @@ export const ObtenerProductoID = async (id_producto: string): Promise<Respuesta>
                     imagenes_producto: imagenesConURL,
                     precio_producto,
                     precio_envio,
-                    existencias
+                    existencia
                 };
             });
             return { status: 200, message: `Se ha devuelto los datos del producto`, data: { DataProductos } };
@@ -190,7 +190,7 @@ export const ObtenerProductosBuscador = async (lista: string, filter: string): P
 
         if (Array.isArray(productosData) && productosData.length > 0) {
             const DataProductos = productosData.map((producto: DataProduct) => {
-                const { nombre_producto, descripcion, marca, imagenes_producto, precio_producto, precio_envio, existencias } = producto;
+                const { nombre_producto, descripcion, marca, imagenes_producto, precio_producto, precio_envio, existencia } = producto;
 
                 // Division de `imagenes_producto` y agregacion de URL base a cada una
                 const imagenesConURL = imagenes_producto!
@@ -204,7 +204,7 @@ export const ObtenerProductosBuscador = async (lista: string, filter: string): P
                     imagenes_producto: imagenesConURL,
                     precio_producto,
                     precio_envio,
-                    existencias
+                    existencia
                 };
             });
             return { status: 200, message: `Se ha devuelto los datos del producto por el input ${filter} y pagina ${lista}`, data: { DataProductos } };
