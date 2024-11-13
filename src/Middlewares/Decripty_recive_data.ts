@@ -7,7 +7,7 @@ type JsonData = { [key: string]: any }; // -> Objeto JSON
 // Respuestas predeterminadas
 const responseNoData: Respuesta = { status: 400, message: 'No se enviaron los datos' };
 
-export function proccessDecryptDataMiddleware(req: Request, res: Response, next: NextFunction): void {
+export async function proccessDecryptDataMiddleware(req: Request, res: Response, next: NextFunction): Promise<void> {
 
     // Obtencion de los datos 
     const { datos_encriptados } = req.body;
@@ -20,7 +20,7 @@ export function proccessDecryptDataMiddleware(req: Request, res: Response, next:
 
     try {
         // Desencriptado de la funcion
-        const datos_json: JsonData = CryptFunctions.DesencriptarDatos(datos_encriptados);
+        const datos_json: JsonData = await CryptFunctions.DesencriptarDatos(datos_encriptados);
         req.body.datos = datos_json;
         next();
     } catch (err) {

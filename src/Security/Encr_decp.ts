@@ -8,7 +8,7 @@ type EncryptedData = string; // -> Datos en string
 const { AES_PRIVATE_KEY } = process.env;
 
 // Función para encriptar datos, recibe un JSON
-export function EncriptarDatos(JSON_DATA: JsonData): EncryptedData {
+export async function EncriptarDatos(JSON_DATA: JsonData): Promise<EncryptedData> {
     const TXT_DATA = JSON.stringify(JSON_DATA);
 
     // Se obtiene la clave privada AES de la variable de entorno y se convierte en buffer
@@ -35,7 +35,7 @@ export function EncriptarDatos(JSON_DATA: JsonData): EncryptedData {
 }
 
 // Función para descifrar datos encriptados, recibe un string con posibles datos con ":" (un JSON en formato string)
-export function DesencriptarDatos(STRING_DATA: EncryptedData): JsonData {
+export async function DesencriptarDatos(STRING_DATA: EncryptedData): Promise<JsonData> {
     // Se obtiene la clave privada AES del entorno y se convierte en un buffer
     const keyHex = AES_PRIVATE_KEY;
 
