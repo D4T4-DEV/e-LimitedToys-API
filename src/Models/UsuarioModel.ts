@@ -117,7 +117,7 @@ export const IniciarSesion = async (data: UserData): Promise<Respuesta> => {
                 const token = GenerarToken({ id: id_usuario, email: email });
 
                 // Encriptamos los datos
-                const dataEncriptada = EncriptarDatos({
+                const dataEncriptada = await EncriptarDatos({
                     id_usuario: id_usuario,
                     nick: nick,
                     url_prof_pic: `${baseURL}/${(prof_pic)}`,
