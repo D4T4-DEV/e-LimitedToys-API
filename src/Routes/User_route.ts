@@ -5,7 +5,7 @@ import * as Controllers from '../Controllers/usuarioController';
 import { verifyTokenMiddleware } from '../Middlewares/Verify_token';
 
 router.post('/register', proccessDecryptDataMiddleware, Controllers.RegistrarUsuario);
-router.get('/login', proccessDecryptDataMiddleware, Controllers.IniciarSesion);
+router.post('/login', proccessDecryptDataMiddleware, Controllers.IniciarSesion);
 router.delete('/delete/:user_ID', verifyTokenMiddleware, Controllers.EliminarUsuario);
 router.get('/obtener-datos/:user_ID', verifyTokenMiddleware, Controllers.ObtenerDatosUsuario)
 
