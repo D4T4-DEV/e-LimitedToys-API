@@ -134,7 +134,7 @@ export const IniciarSesion = async (data: UserData): Promise<Respuesta> => {
                 };
 
             } else {
-                return { status: 401, message: 'Datos incorrectos, verificar' }
+                return { status: 401, message: 'Correo o contraseña incorrectos' }
             }
         }
 
