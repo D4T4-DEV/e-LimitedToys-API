@@ -137,3 +137,6 @@ uploads/
 
 # Carpeta de keys
 Keys/
+
+# Debug VSCode
+.vscode/*
