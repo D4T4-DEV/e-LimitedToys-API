@@ -21,7 +21,7 @@ export const UserDataSchema = z.object({
     id_usuario: z.string().optional(),
     nombres: z.string(),
     apellidos: z.string(),
-    email: z.string(),
+    email: z.string().email(),
     password: z.string(),
     nick: z.string(),
     prof_pic: z.string().optional(),
