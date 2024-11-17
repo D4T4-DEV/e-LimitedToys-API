@@ -55,6 +55,7 @@ CREATE TABLE IF NOT EXISTS Productos (
     nombre VARCHAR(255) NOT NULL,
     marca VARCHAR(255) NOT NULL,
     descripcion VARCHAR(255) NOT NULL,
+    is_featured  BOOLEAN DEFAULT FALSE,
     is_product_paused BOOLEAN DEFAULT FALSE
 );
 
