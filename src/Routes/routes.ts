@@ -30,18 +30,20 @@ const corsOptionsGeneral: CorsOptions = {
     credentials: false
 };
 
+const CORS = cors(corsOptionsGeneral);
+
 // Rutas especificas
 
 // Estado del server
-Router.use('/status-server', cors(corsOptionsGeneral), StatusServer);
-Router.use('/subir-img', cors(corsOptionsGeneral), SubirImagenesServer);
+Router.use('/status-server', CORS, StatusServer);
+Router.use('/subir-img', CORS, SubirImagenesServer);
 
 // Productos
-Router.use('/productos', cors(corsOptionsGeneral), Productos);
-Router.use('/banner', cors(corsOptionsGeneral), Banners);
-Router.use('/carrito', cors(corsOptionsGeneral), ShoppingCart);
-Router.use('/proceso-de-compra', cors(corsOptionsGeneral), ProcesoCompra);
-Router.use('/usuarios', cors(corsOptionsGeneral), Usuarios);
+Router.use('/productos', CORS, Productos);
+Router.use('/banner', CORS, Banners);
+Router.use('/carrito', CORS, ShoppingCart);
+Router.use('/proceso-de-compra', CORS, ProcesoCompra);
+Router.use('/usuarios', CORS, Usuarios);
 
 
 export default Router;

@@ -41,6 +41,14 @@ export const ObtenerProductos = async (indice_catalogo: string): Promise<Respues
     }
 }
 
+export const ObtenerProductosDestacados = async (): Promise<Respuesta> => {
+    try {
+        return Models.ObtenerProductosDestacados();
+    } catch (err) {
+        throw err;
+    }
+}
+
 export const ObtenerProductoID = async (id_producto: string): Promise<Respuesta> => {
     try {
         return Models.ObtenerProductoID(id_producto);

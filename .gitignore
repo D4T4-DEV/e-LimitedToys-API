@@ -134,3 +134,9 @@ build/
 
 # Carpeta de imagenes 
 uploads/
+
+# Carpeta de keys
+Keys/
+
+# Debug VSCode
+.vscode/*

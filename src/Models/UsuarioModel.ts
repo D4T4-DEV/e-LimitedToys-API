@@ -3,7 +3,7 @@ import fs from 'fs';
 import { getConnectionMySQL } from "../DataBase/connector";
 import { Respuesta } from "../Interfaces/ResponseInterface";
 import { UserData } from "../Interfaces/UsuarioInterface";
-import { EncriptarDatos } from "../Security/Encr_decp";
+// import { EncriptarDatos } from "../Security/Encr_decp";
 import { CifrarContrasenia, CompararContrasenias } from "../Security/Pwd_process";
 import { GenerarToken } from "../Security/Tokens";
 
@@ -116,20 +116,25 @@ export const IniciarSesion = async (data: UserData): Promise<Respuesta> => {
                 // Generamos su token
                 const token = GenerarToken({ id: id_usuario, email: email });
 
-                // Encriptamos los datos
-                const dataEncriptada = EncriptarDatos({
-                    id_usuario: id_usuario,
-                    nick: nick,
-                    url_prof_pic: `${baseURL}/${(prof_pic)}`,
-                    token: token
-                });
+                // Encriptamos los datos antes usado para enviar datos encriptados y el cliente los desencripte y use
+                // const dataEncriptada = await EncriptarDatos({
+                //     id_usuario: id_usuario,
+                //     nick: nick,
+                //     url_prof_pic: `${baseURL}/${(prof_pic)}`,
+                //     token: token
+                // });
 
                 return {
-                    status: 200, message: 'Devolviendo datos, para que se inicie sesion', data: { dataEncriptada }
+                    status: 200, message: 'Devolviendo datos, para que se inicie sesion', data: { 
+                        id_usuario: id_usuario,
+                        nick: nick,
+                        url_prof_pic: `${baseURL}/${(prof_pic)}`,
+                        token: token
+                     }
                 };
 
             } else {
-                return { status: 401, message: 'Datos incorrectos, verificar' }
+                return { status: 401, message: 'Correo o contraseña incorrectos' }
             }
         }
 

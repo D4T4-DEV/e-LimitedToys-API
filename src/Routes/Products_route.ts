@@ -17,8 +17,9 @@ const router = express.Router();
     👆 Hasta aqui llegan las posibles implementaciones (aplica para sus servicios, controladores y modelos)
 */
 
-router.get('/get/:indice_producto',  Controllers.ObtenerProductos);
-router.get('/get-for-id/:idProducto',  Controllers.ObtenerProductoID);
+router.get('/get/:indice',  Controllers.ObtenerProductos);
+router.get('/get-featured', Controllers.ObtenerProductosDestacados);
+router.get('/get-for-id/:id_product',  Controllers.ObtenerProductoID);
 router.get('/get/search/:indice/:filter',  Controllers.ObtenerProductosBuscador);
 
 export default router;

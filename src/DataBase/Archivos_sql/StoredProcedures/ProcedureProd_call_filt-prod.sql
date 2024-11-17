@@ -9,6 +9,7 @@ BEGIN
     SET pagina = (lista - 1) * 15;  -- este es el desplazamiento para que la segunda vez inicie en 15
 
     SELECT 
+        p.id_producto,
         p.nombre,
         p.descripcion,
         p.marca,

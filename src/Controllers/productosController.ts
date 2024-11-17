@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { Respuesta } from '../Interfaces/ResponseInterface';
 import * as Servicios from '../Services/productosServicio';
+import { GetProductForIDSchema, GetProductsForFilter, GetProductsForIndex } from '../Interfaces/ProductoInterface';
 
 /*
     Posibles implementaciones
@@ -64,15 +65,31 @@ export const EliminarProducto = async (req: Request, res: Response, next: NextFu
 */
 
 export const ObtenerProductos = async (req: Request, res: Response, next: NextFunction) => {
-    const { indice_producto } = req.params;
+    const resultValidateData = GetProductsForIndex.safeParse(req.params);
+    if (!resultValidateData.success) {
+        res.status(400).json({ status: 400, message: 'No se enviaron los datos necesarios para la operación' });
+        return;
+    }
+    const { indice } = req.params;
 
-    if (!indice_producto) {
-        res.status(400).json({ status: 400, message: 'No proporcionaste los datos' });
+    // Verificar si id_product es un numero
+    if (!Number.isFinite(Number(indice))) {
+        res.status(400).json({ status: 400, message: 'El indice de paginado debe ser un número válido' });
         return;
     }
 
     try {
-        const resultadoOperacion: Respuesta = await Servicios.ObtenerProductos(indice_producto);
+        const resultadoOperacion: Respuesta = await Servicios.ObtenerProductos(indice);
+        res.status(resultadoOperacion.status).json(resultadoOperacion)
+    } catch (error) {
+        // Pasamos el error al middleware de errores
+        next(error);
+    }
+}
+
+export const ObtenerProductosDestacados = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const resultadoOperacion: Respuesta = await Servicios.ObtenerProductosDestacados();
         res.status(resultadoOperacion.status).json(resultadoOperacion)
     } catch (error) {
         // Pasamos el error al middleware de errores
@@ -81,15 +98,22 @@ export const ObtenerProductos = async (req: Request, res: Response, next: NextFu
 }
 
 export const ObtenerProductoID = async (req: Request, res: Response, next: NextFunction) => {
-    const { idProducto } = req.params;
+    // Validacion de datos por ZOD
+    const resultValidateData = GetProductForIDSchema.safeParse(req.params);
+    if (!resultValidateData.success) {
+        res.status(400).json({ status: 400, message: 'No se enviaron los datos necesarios para la operación' });
+        return;
+    }
+    const { id_product } = req.params;
 
-    if (!idProducto) {
-        res.status(400).json({ status: 400, message: 'No proporcionaste los datos' });
+    // Verificar si id_product es un numero
+    if (!Number.isFinite(Number(id_product))) {
+        res.status(400).json({ status: 400, message: 'El ID de producto debe ser un número válido' });
         return;
     }
 
     try {
-        const resultadoOperacion: Respuesta = await Servicios.ObtenerProductoID(idProducto);
+        const resultadoOperacion: Respuesta = await Servicios.ObtenerProductoID(id_product);
         res.status(resultadoOperacion.status).json(resultadoOperacion)
     } catch (error) {
         // Pasamos el error al middleware de errores
@@ -98,10 +122,18 @@ export const ObtenerProductoID = async (req: Request, res: Response, next: NextF
 }
 
 export const ObtenerProductosBuscador = async (req: Request, res: Response, next: NextFunction) => {
+    // Validacion de datos por ZOD
+    const resultValidateData = GetProductsForFilter.safeParse(req.params);
+    if (!resultValidateData.success) {
+        res.status(400).json({ status: 400, message: 'No se enviaron los datos necesarios para la operación' });
+        return;
+    }
+
     const { indice, filter } = req.params;
 
-    if (!indice || !filter) {
-        res.status(400).json({ status: 400, message: 'No proporcionaste los datos necesarios' });
+    // Verificar si id_product es un numero
+    if (!Number.isFinite(Number(indice))) {
+        res.status(400).json({ status: 400, message: 'El indice de paginado debe ser un número válido' });
         return;
     }
 
