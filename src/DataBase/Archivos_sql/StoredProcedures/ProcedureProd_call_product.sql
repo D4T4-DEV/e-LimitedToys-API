@@ -9,7 +9,7 @@ BEGIN
 
     SELECT 
         p.id_producto,
-        p.nombre,
+        p.nombre_producto,
         p.descripcion,
         p.marca,
         GROUP_CONCAT(ip.prod_img SEPARATOR ', ') AS imagenes_producto, -- se utiliza GROUP_CONCAT para mostrar las imágenes en una sola fila
@@ -25,7 +25,7 @@ BEGIN
     WHERE 
         p.is_product_paused = FALSE -- se filtra los productos pausados (sin stock)
     GROUP BY 
-        p.id_producto, p.nombre, p.descripcion, p.marca, i.precio_producto, i.precio_envio, i.existencia
+        p.id_producto, p.nombre_producto, p.descripcion, p.marca, i.precio_producto, i.precio_envio, i.existencia
     LIMIT 15 OFFSET pagina;
 
 END //

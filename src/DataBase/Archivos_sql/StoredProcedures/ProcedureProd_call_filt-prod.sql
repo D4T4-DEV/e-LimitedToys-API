@@ -10,7 +10,7 @@ BEGIN
 
     SELECT 
         p.id_producto,
-        p.nombre,
+        p.nombre_producto,
         p.descripcion,
         p.marca,
         GROUP_CONCAT(ip.prod_img SEPARATOR ', ') AS imagenes_producto,
@@ -26,12 +26,12 @@ BEGIN
     WHERE 
         p.is_product_paused = FALSE -- se filtran los productos pausados
         AND (
-            p.nombre LIKE CONCAT('%', texto_de_busqueda, '%') OR -- concat para encontrar por nombre
+            p.nombre_producto LIKE CONCAT('%', texto_de_busqueda, '%') OR -- concat para encontrar por nombre
             p.marca LIKE CONCAT('%', texto_de_busqueda, '%') OR -- concat para encontrar por marca
             p.descripcion LIKE CONCAT('%', texto_de_busqueda, '%') -- concat para encontrar por descripcion
         )
     GROUP BY 
-        p.id_producto, p.nombre, p.descripcion, p.marca, i.precio_producto, i.precio_envio, i.existencia
+        p.id_producto, p.nombre_producto, p.descripcion, p.marca, i.precio_producto, i.precio_envio, i.existencia
     LIMIT 15 OFFSET pagina;
 
 END //

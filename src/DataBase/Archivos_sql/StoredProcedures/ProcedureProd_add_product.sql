@@ -18,7 +18,7 @@ BEGIN
     DECLARE delimitador CHAR(1) DEFAULT ','; -- Indicador para cortar y tomar el valor de una imagen
 
     -- Insertar un nuevo producto en "PRODUCTOS"
-    INSERT INTO Productos (nombre, marca, descripcion) VALUES (
+    INSERT INTO Productos (nombre_producto, marca, descripcion) VALUES (
         p_nombre, 
         p_marca, 
         p_descripcion
