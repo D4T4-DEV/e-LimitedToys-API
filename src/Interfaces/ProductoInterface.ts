@@ -1,7 +1,7 @@
 import { string, z } from 'zod';
 
 export interface DataProduct {
-    id_product?: string;
+    id_producto?: string;
     nombre_producto?: string;
     marca?: string;
     descripcion?: string;

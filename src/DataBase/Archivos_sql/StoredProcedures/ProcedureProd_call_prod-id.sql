@@ -5,6 +5,7 @@ CREATE PROCEDURE ObtenerProductoPorID(
 )
 BEGIN
     SELECT 
+        p.id_producto,
         p.nombre,
         p.descripcion,
         p.marca,
