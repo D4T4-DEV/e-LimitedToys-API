@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS Direccion (
 
 CREATE TABLE IF NOT EXISTS Productos (
 	id_producto INT PRIMARY KEY AUTO_INCREMENT,
-    nombre VARCHAR(255) NOT NULL,
+    nombre_producto VARCHAR(255) NOT NULL,
     marca VARCHAR(255) NOT NULL,
     descripcion VARCHAR(255) NOT NULL,
     is_featured  BOOLEAN DEFAULT FALSE,

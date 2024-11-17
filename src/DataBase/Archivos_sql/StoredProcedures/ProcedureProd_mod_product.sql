@@ -28,7 +28,7 @@ BEGIN
 
         -- Actualizacion de la tabla Productos
         UPDATE Productos SET
-        nombre = p_nombre, 
+        nombre_producto = p_nombre, 
         marca = p_marca, 
         descripcion = p_marca
         WHERE id_producto = p_id_producto;
