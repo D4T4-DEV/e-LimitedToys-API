@@ -87,6 +87,16 @@ export const ObtenerProductos = async (req: Request, res: Response, next: NextFu
     }
 }
 
+export const ObtenerProductosDestacados = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const resultadoOperacion: Respuesta = await Servicios.ObtenerProductosDestacados();
+        res.status(resultadoOperacion.status).json(resultadoOperacion)
+    } catch (error) {
+        // Pasamos el error al middleware de errores
+        next(error);
+    }
+}
+
 export const ObtenerProductoID = async (req: Request, res: Response, next: NextFunction) => {
     // Validacion de datos por ZOD
     const resultValidateData = GetProductForIDSchema.safeParse(req.params);

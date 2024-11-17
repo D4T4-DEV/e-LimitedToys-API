@@ -18,6 +18,7 @@ const router = express.Router();
 */
 
 router.get('/get/:indice',  Controllers.ObtenerProductos);
+router.get('/get-featured', Controllers.ObtenerProductosDestacados);
 router.get('/get-for-id/:id_product',  Controllers.ObtenerProductoID);
 router.get('/get/search/:indice/:filter',  Controllers.ObtenerProductosBuscador);
 

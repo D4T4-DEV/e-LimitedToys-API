@@ -136,9 +136,51 @@ export const ObtenerProductos = async (indice_catalogo: string): Promise<Respues
     }
 };
 
-export const ObtenerProductoID = async (id_producto: string): Promise<Respuesta> => {
+export const ObtenerProductosDestacados = async (): Promise<Respuesta> => {
     const conn_MYSQL = await getConnectionMySQL();
 
+    try {
+        const [result]: any = await conn_MYSQL.query(`CALL ObtenerProductosDestacados()`);
+
+        // Tomamos lo que viene de la consulta, o bien asignamos un arreglo vacio
+        const productosData: DataProduct[] = result[0] || [];
+
+        if (productosData.length > 0) {
+            // Procesamos cada producto en productosData
+            const DataProductos = productosData.map((producto: DataProduct) => {
+                const { nombre_producto, descripcion, marca, imagenes_producto, precio_producto, precio_envio, existencia } = producto;
+
+                // Division de `imagenes_producto` y agregacion de URL base a cada una
+                const imagenesConURL = imagenes_producto!
+                    .split(",") // Separamos por comas
+                    .map((img: string) => `${URL_BASE}${img.trim().replace(/\\/g, '/')}`) // concatenacion y eliminamos espacios en blanco
+
+                return {
+                    nombre_producto,
+                    descripcion,
+                    marca,
+                    imagenes_producto: imagenesConURL,
+                    precio_producto,
+                    precio_envio,
+                    existencia
+                };
+            });
+
+            return { status: 200, message: `Se ha devuelto los 12 productos destacados de la semana`, data: { DataProductos } };
+        }
+
+        return { status: 404, message: `No hay productos` };
+    } catch (error) {
+        const customError = new Error(`ObtenerProductos() modelo ${error}`);
+        (customError as any).statusCode = 500;
+        throw customError;
+    } finally {
+        conn_MYSQL.release();
+    }
+};
+
+export const ObtenerProductoID = async (id_producto: string): Promise<Respuesta> => {
+    const conn_MYSQL = await getConnectionMySQL();
 
     try {
         const [result]: any[] = await conn_MYSQL.query(`CALL ObtenerProductoPorID( ? )`, [id_producto]);
