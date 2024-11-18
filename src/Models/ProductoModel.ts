@@ -93,11 +93,11 @@ export const EliminarProducto = async (data: DataProduct): Promise<Respuesta> =>
     👆 Hasta aqui llegan las posibles implementaciones (aplica para sus servicios, controladores y modelos)
 */
 
-export const ObtenerProductos = async (indice_catalogo: string): Promise<Respuesta> => {
+export const ObtenerProductos = async (/*indice_catalogo: string*/): Promise<Respuesta> => {
     const conn_MYSQL = await getConnectionMySQL();
 
     try {
-        const [result]: any = await conn_MYSQL.query(`CALL ObtenerProductos( ? )`, [indice_catalogo]);
+        const [result]: any = await conn_MYSQL.query(`CALL ObtenerProductos(  )`, []);
 
         // Tomamos lo que viene de la consulta, o bien asignamos un arreglo vacio
         const productosData: DataProduct[] = result[0] || [];
@@ -124,7 +124,7 @@ export const ObtenerProductos = async (indice_catalogo: string): Promise<Respues
                 };
             });
 
-            return { status: 200, message: `Se ha devuelto los 15 productos del índice ${indice_catalogo}`, data: { DataProductos } };
+            return { status: 200, message: `Se ha devuelto los productos`, data: { DataProductos } };
         }
 
         return { status: 404, message: `No hay productos` };

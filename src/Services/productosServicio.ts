@@ -33,9 +33,9 @@ export const EliminarProducto = async (data: DataProduct): Promise<Respuesta> =>
 
     👆 Hasta aqui llegan las posibles implementaciones (aplica para sus servicios, controladores y modelos)
 */
-export const ObtenerProductos = async (indice_catalogo: string): Promise<Respuesta> => {
+export const ObtenerProductos = async (/*indice_catalogo: string*/): Promise<Respuesta> => {
     try {
-        return Models.ObtenerProductos(indice_catalogo);
+        return Models.ObtenerProductos();
     } catch (err) {
         throw err;
     }
