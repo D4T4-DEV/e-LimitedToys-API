@@ -15,4 +15,4 @@ END //
 
 DELIMITER ;
 
--- CALL ObtenerMarcasYPrecios();
+-- CALL ObtenerPrecioYMarca();
