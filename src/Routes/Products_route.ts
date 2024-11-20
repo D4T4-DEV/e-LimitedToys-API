@@ -20,5 +20,6 @@ router.get('/get',  Controllers.ObtenerProductos);
 router.get('/get-featured', Controllers.ObtenerProductosDestacados);
 router.get('/get-for-id/:id_product',  Controllers.ObtenerProductoID);
 router.get('/get/search/:indice/:filter',  Controllers.ObtenerProductosBuscador);
+router.get('/get-marcas-preciosminmax', Controllers.ObtenerMarcasYPrecios);
 
 export default router;

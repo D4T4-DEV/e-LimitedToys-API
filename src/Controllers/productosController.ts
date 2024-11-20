@@ -145,3 +145,13 @@ export const ObtenerProductosBuscador = async (req: Request, res: Response, next
         next(error);
     }
 }
+
+export const ObtenerMarcasYPrecios = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const resultadoOperacion: Respuesta = await Servicios.ObtenerMarcasYPrecios();
+        res.status(resultadoOperacion.status).json(resultadoOperacion)
+    } catch (error) {
+        // Pasamos el error al middleware de errores
+        next(error);
+    }
+}

@@ -65,3 +65,11 @@ export const ObtenerProductosBuscador = async (lista: string, filter: string): P
         throw err;
     }
 }
+
+export const ObtenerMarcasYPrecios = async (): Promise<Respuesta> => {
+    try {
+        return Models.ObtenerMarcasYPrecios();
+    } catch (err) {
+        throw err;
+    }
+}
