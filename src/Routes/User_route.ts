@@ -10,6 +10,7 @@ router.delete('/delete/:user_ID', verifyTokenMiddleware, Controllers.EliminarUsu
 router.get('/obtener-datos/:user_ID', verifyTokenMiddleware, Controllers.ObtenerDatosUsuario)
 
 
+router.get('/check-exist/:emailDecript', Controllers.ChecarExistenciaEmail);
 router.put('/edit-direccion', verifyTokenMiddleware, Controllers.EditarDireccion);
 router.put('/edit-photo', verifyTokenMiddleware, Controllers.EditarFotoPerfil);
 router.delete('/delete-photo', verifyTokenMiddleware, Controllers.EliminarFotoPerfil);

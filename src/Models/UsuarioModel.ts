@@ -125,12 +125,12 @@ export const IniciarSesion = async (data: UserData): Promise<Respuesta> => {
                 // });
 
                 return {
-                    status: 200, message: 'Devolviendo datos, para que se inicie sesion', data: { 
+                    status: 200, message: 'Devolviendo datos, para que se inicie sesion', data: {
                         id_usuario: id_usuario,
                         nick: nick,
                         url_prof_pic: `${baseURL}/${(prof_pic)}`,
                         token: token
-                     }
+                    }
                 };
 
             } else {
@@ -148,6 +148,33 @@ export const IniciarSesion = async (data: UserData): Promise<Respuesta> => {
         conn_MYSQL.release();
     }
 }
+
+export const ChecarExistenciaEmail = async (data: UserData): Promise<Respuesta> => {
+    // Obtencion de las variables de la interfaz
+    const {
+        email
+    } = data;
+
+    const conn_MYSQL = await getConnectionMySQL();
+
+    try {
+        const [result]: any[] = await conn_MYSQL.query(`
+            SELECT email FROM Usuarios WHERE email = ?;
+        `, [email]);
+
+        // Evaluamos si devolvio o no datos, si no devolvió nada se dice que no existe el email
+        const resultadoEvaluado = (result.length > 0);
+
+        return { status: 200, message: resultadoEvaluado ? `Si existe` : `No existe`, data: { exist: resultadoEvaluado ? true : false } };
+    } catch (error) {
+        const customError = new Error(`ChecarExistenciaEmail() modelo ${error}`);
+        (customError as any).statusCode = 500;
+        throw customError;
+    } finally {
+        conn_MYSQL.release();
+    }
+}
+
 
 export const EditarDireccion = async (data: UserData): Promise<Respuesta> => {
     // Obtencion de las variables de la interfaz
@@ -243,7 +270,7 @@ export const EditarFotoPerfil = async (data: UserData): Promise<Respuesta> => {
             if (result.affectedRows === 0) {
                 return { status: 500, message: 'No se subio la imagen, porfavor intentelo mas tarde' };
             }
-            
+
             // ASPECTO PARA ELIMINAR LA IMAGEN DEL DIRECTORIO
             const imagePath = path.join(__dirname, `../../${rutaImagen}`);
 
@@ -290,7 +317,7 @@ export const EliminarFotoPerfil = async (data: UserData): Promise<Respuesta> => 
         if (result.affectedRows === 0) {
             return { status: 500, message: 'No se elimino la imagen, porfavor intentelo mas tarde' };
         }
-        
+
         // ASPECTO PARA ELIMINAR LA IMAGEN DEL DIRECTORIO
         const imagePath = path.join(__dirname, `../../${rutaImagen}`);
 

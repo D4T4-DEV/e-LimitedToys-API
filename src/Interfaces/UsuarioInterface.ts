@@ -33,6 +33,10 @@ export const UserDataSchema = z.object({
     referencia: z.string().optional(),
 });
 
+export const CheckExistSchema = UserDataSchema.pick({
+    email: true
+});
+
 export const LoginShema = UserDataSchema.pick({
     email: true,
     password: true,
