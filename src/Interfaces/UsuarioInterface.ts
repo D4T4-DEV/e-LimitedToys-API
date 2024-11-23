@@ -25,11 +25,11 @@ export const UserDataSchema = z.object({
     password: z.string(),
     nick: z.string(),
     prof_pic: z.string().optional(),
-    calle: z.string(),
-    colonia: z.string(),
-    ciudad: z.string(),
-    pais: z.string(),
-    codigoPostal: z.number(),
+    calle: z.string().optional(),
+    colonia: z.string().optional(),
+    ciudad: z.string().optional(),
+    pais: z.string().optional(),
+    codigoPostal: z.string().optional(),
     referencia: z.string().optional(),
 });
 
