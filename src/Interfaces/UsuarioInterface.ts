@@ -42,9 +42,14 @@ export const LoginShema = UserDataSchema.pick({
     password: true,
 });
 
-export const User_ID_Schema = UserDataSchema.extend({id_usuario: z.string()});
+export const User_ID_Schema = UserDataSchema.pick({
+    id_usuario: true,
+}).extend({
+    id_usuario: z.string(),
+});
 
 export const EditAddressSchema = UserDataSchema.pick({
+    id_usuario: true,
     calle: true,
     colonia: true,
     ciudad: true,
@@ -54,13 +59,15 @@ export const EditAddressSchema = UserDataSchema.pick({
 }).extend({id_usuario: z.string()});
 
 export const EditNickNameSchema = UserDataSchema.pick({
+    id_usuario: true,
     nick: true
 }).extend({id_usuario: z.string()});;
 
 export const EditPhotoProfileSchema = UserDataSchema.pick({
+    id_usuario: true,
     prof_pic: true
 }).extend({id_usuario: z.string()});;
 
 export const DeletePhotoProfileSchema = UserDataSchema.pick({
-
+    id_usuario: true,
 }).extend({id_usuario: z.string()});
