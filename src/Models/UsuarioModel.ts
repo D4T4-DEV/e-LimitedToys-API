@@ -252,17 +252,17 @@ export const EditarFotoPerfil = async (data: UserData): Promise<Respuesta> => {
     try {
         const [relativePathAnt]: any[] = await conn_MYSQL.query(`SELECT prof_pic FROM Usuarios WHERE id_usuario = (?)`, [id_usuario]);
         const rutaImagen = relativePathAnt[0].prof_pic;
-        const nombreImagen = path.basename(rutaImagen);
-
+        
         if (!rutaImagen) {
             const [result]: any[] = await conn_MYSQL.query(`
                 UPDATE Usuarios SET prof_pic = (?) WHERE id_usuario = (?);
-            `, [prof_pic, id_usuario]);
-
-            if (result.affectedRows === 0) {
-                return { status: 500, message: 'No se subio la imagen, porfavor intentelo mas tarde' };
-            }
-        } else {
+                `, [prof_pic, id_usuario]);
+                
+                if (result.affectedRows === 0) {
+                    return { status: 500, message: 'No se subio la imagen, porfavor intentelo mas tarde' };
+                }
+            } else {
+            const nombreImagen = path.basename(rutaImagen);
             const [result]: any[] = await conn_MYSQL.query(`
                 UPDATE Usuarios SET prof_pic = (?) WHERE id_usuario = (?);
             `, [prof_pic, id_usuario]);

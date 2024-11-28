@@ -61,12 +61,12 @@ export const EditAddressSchema = UserDataSchema.pick({
 export const EditNickNameSchema = UserDataSchema.pick({
     id_usuario: true,
     nick: true
-}).extend({id_usuario: z.string()});;
+}).extend({id_usuario: z.string()});
 
 export const EditPhotoProfileSchema = UserDataSchema.pick({
     id_usuario: true,
     prof_pic: true
-}).extend({id_usuario: z.string()});;
+}).extend({id_usuario: z.string()});
 
 export const DeletePhotoProfileSchema = UserDataSchema.pick({
     id_usuario: true,
