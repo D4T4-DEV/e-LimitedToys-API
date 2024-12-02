@@ -2,7 +2,8 @@ import { NextFunction, Request, Response } from 'express';
 import { Respuesta } from '../Interfaces/ResponseInterface';
 import * as Servicios from '../Services/usuarioService';
 import { RequestPersonalizado } from '../Interfaces/Request/personalizateRequestUser';
-import { DeletePhotoProfileSchema, EditAddressSchema, EditNickNameSchema, EditPhotoProfileSchema, LoginShema, User_ID_Schema, UserDataSchema } from '../Interfaces/UsuarioInterface';
+import * as CryptFunctions from '../Security/Encr_decp';
+import { CheckExistSchema, DeletePhotoProfileSchema, EditAddressSchema, EditNickNameSchema, EditPhotoProfileSchema, LoginShema, User_ID_Schema, UserDataSchema } from '../Interfaces/UsuarioInterface';
 
 export const RegistrarUsuario = async (req: Request, res: Response, next: NextFunction) => {
     const { datos } = req.body;
@@ -77,16 +78,40 @@ export const ObtenerDatosUsuario = async (req: RequestPersonalizado, res: Respon
         return;
     }
 
-    const { user_ID } = req.params;
+    const { id_usuario } = req.params;
     const idToken = req.usuarioId;
 
-    if (user_ID != idToken) {
+    if (id_usuario != idToken) {
         res.status(401).json({ status: 401, message: 'Operacion no valida' });
         return;
     }
 
     try {
-        const resultadoOperacion: Respuesta = await Servicios.ObtenerDatosUsuario({ id_usuario: user_ID });
+        const resultadoOperacion: Respuesta = await Servicios.ObtenerDatosUsuario({ id_usuario });
+        res.status(resultadoOperacion.status).json(resultadoOperacion)
+    } catch (error) {
+        // Pasamos el error al middleware de errores
+        next(error);
+    }
+}
+
+
+export const ChecarExistenciaEmail = async (req: Request, res: Response, next: NextFunction) => {
+    const { emailDecript } = req.params;
+
+    try {
+        const decodedEmail = decodeURIComponent(emailDecript);
+        const datos = await CryptFunctions.DesencriptarDatos(decodedEmail);
+        
+        // Validacion de datos por ZOD
+        const resultValidateData = CheckExistSchema.safeParse(datos);
+    
+        if (!resultValidateData.success) {
+            res.status(400).json({ status: 401, message: 'No se enviaron los datos correctos' });
+            return;
+        }
+
+        const resultadoOperacion: Respuesta = await Servicios.ChecarExistenciaEmail(datos);
         res.status(resultadoOperacion.status).json(resultadoOperacion)
     } catch (error) {
         // Pasamos el error al middleware de errores
@@ -106,7 +131,7 @@ export const EditarDireccion = async (req: RequestPersonalizado, res: Response, 
     }
 
     const idToken = req.usuarioId;
-    if (datos.user_ID != idToken) {
+    if (datos.id_usuario != idToken) {
         res.status(401).json({ status: 401, message: 'Operacion no valida para este usuario' })
         return;
     }
@@ -125,14 +150,13 @@ export const EditarNick = async (req: RequestPersonalizado, res: Response, next:
 
     // Validacion de datos por ZOD
     const resultValidateData = EditNickNameSchema.safeParse(datos);
-
     if (!resultValidateData.success) {
         res.status(400).json({ status: 401, message: 'No se enviaron los datos correctos' });
         return;
     }
 
     const idToken = req.usuarioId;
-    if (datos.user_ID != idToken) {
+    if (datos.id_usuario != idToken) {
         res.status(401).json({ status: 401, message: 'Operacion no valida' });
         return;
     }
@@ -149,7 +173,7 @@ export const EditarNick = async (req: RequestPersonalizado, res: Response, next:
 export const EditarFotoPerfil = async (req: RequestPersonalizado, res: Response, next: NextFunction) => {
 
     const { datos } = req.body;
-
+    
     // Validacion de datos por ZOD
     const resultValidateData = EditPhotoProfileSchema.safeParse(datos);
 
@@ -160,7 +184,7 @@ export const EditarFotoPerfil = async (req: RequestPersonalizado, res: Response,
 
     const idToken = req.usuarioId;
 
-    if (datos.user_ID != idToken) {
+    if (datos.id_usuario != idToken) {
         res.status(401).json({ status: 401, message: 'Operacion no valida' });
         return;
     }
@@ -188,7 +212,7 @@ export const EliminarFotoPerfil = async (req: RequestPersonalizado, res: Respons
 
     const idToken = req.usuarioId;
 
-    if (datos.user_ID != idToken) {
+    if (datos.id_usuario != idToken) {
         res.status(401).json({ status: 401, message: 'Operacion no valida' });
         return;
     }

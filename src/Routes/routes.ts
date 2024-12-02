@@ -37,7 +37,7 @@ const CORS = cors(corsOptionsGeneral);
 // Estado del server
 Router.use('/status-server', CORS, StatusServer);
 Router.use('/subir-img', CORS, SubirImagenesServer);
-
+    
 // Productos
 Router.use('/productos', CORS, Productos);
 Router.use('/banner', CORS, Banners);

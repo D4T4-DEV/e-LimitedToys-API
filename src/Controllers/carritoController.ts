@@ -89,16 +89,16 @@ export const ObtenerCarrito = async (req: RequestPersonalizado, res: Response, n
         return;
     }
 
-    const { id_Usuario } = req.params;
+    const { id_usuario } = req.params;
     const idToken = req.usuarioId;
 
-    if (id_Usuario != idToken) {
+    if (id_usuario != idToken) {
         res.status(401).json({ status: 401, message: 'Operacion no valida para este usuario' });
         return;
     }
 
     try {
-        const resultadoOperacion: Respuesta = await Servicios.ObtenerCarrito(id_Usuario);
+        const resultadoOperacion: Respuesta = await Servicios.ObtenerCarrito(id_usuario);
         res.status(resultadoOperacion.status).json(resultadoOperacion)
     } catch (error) {
         // Pasamos el error al middleware de errores

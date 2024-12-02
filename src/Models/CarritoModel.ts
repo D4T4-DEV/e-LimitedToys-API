@@ -127,7 +127,7 @@ export const ObtenerCarrito = async (userID: string): Promise<Respuesta> => {
             const datosCarritoProcesado = datosCarrito.map((producto: any) => ({
                 ...producto,
                 imagen_producto: `${URL_BASE}${producto.imagen_producto.replace(/\\/g, "/")}`,
-                total_a_pagar: `${producto.precio_producto * producto.cantidad_seleccionada + producto.precio_envio}`,
+                total_a_pagar: `${Number(producto.precio_producto) * Number(producto.cantidad_seleccionada) + Number(producto.precio_envio)}`,
             }));
 
             return { status: 200, message: `Devolvi el carrito`, data: { datosCarritoProcesado } };

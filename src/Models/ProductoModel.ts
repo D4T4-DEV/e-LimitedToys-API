@@ -93,11 +93,11 @@ export const EliminarProducto = async (data: DataProduct): Promise<Respuesta> =>
     👆 Hasta aqui llegan las posibles implementaciones (aplica para sus servicios, controladores y modelos)
 */
 
-export const ObtenerProductos = async (indice_catalogo: string): Promise<Respuesta> => {
+export const ObtenerProductos = async (/*indice_catalogo: string*/): Promise<Respuesta> => {
     const conn_MYSQL = await getConnectionMySQL();
 
     try {
-        const [result]: any = await conn_MYSQL.query(`CALL ObtenerProductos( ? )`, [indice_catalogo]);
+        const [result]: any = await conn_MYSQL.query(`CALL ObtenerProductos(  )`, []);
 
         // Tomamos lo que viene de la consulta, o bien asignamos un arreglo vacio
         const productosData: DataProduct[] = result[0] || [];
@@ -124,7 +124,7 @@ export const ObtenerProductos = async (indice_catalogo: string): Promise<Respues
                 };
             });
 
-            return { status: 200, message: `Se ha devuelto los 15 productos del índice ${indice_catalogo}`, data: { DataProductos } };
+            return { status: 200, message: `Se ha devuelto los productos`, data: { DataProductos } };
         }
 
         return { status: 404, message: `No hay productos` };
@@ -265,3 +265,43 @@ export const ObtenerProductosBuscador = async (lista: string, filter: string): P
         conn_MYSQL.release();
     }
 }
+
+export const ObtenerMarcasYPrecios = async (/*indice_catalogo: string*/): Promise<Respuesta> => {
+    const conn_MYSQL = await getConnectionMySQL();
+
+    try {
+        const [result]: any = await conn_MYSQL.query(`CALL ObtenerPrecioYMarca( )`, []);
+
+        // Se obtiene lo que viene de la consulta, se hace de esta manera, ya que el resultado del procedure son 2 tablas
+        const marcasData = result[0] || [];
+        const preciosData = result[1] || [];
+
+        // Se comprueba que exitan los datos en ambos resultados
+        if (marcasData.length > 0 || preciosData.length > 0) {
+            //Mepea las marcas
+            const Marcas = marcasData.map((marca: { marca: string }) => marca.marca);
+
+            // Procesa los precios (se toman los nombres del procedure)
+            const { Precio_Maximo, Precio_Minimo } = preciosData[0] || { Precio_Maximo: null, Precio_Minimo: null };
+
+            return {
+                status: 200,
+                message: `Se han devuelto las marcas y los precios`,
+                data: {
+                    Marcas,
+                    Precio_Maximo,
+                    Precio_Minimo,
+                },
+            };
+        }
+
+        // Si no se encuentran los precios o marcas se muestra el siguiente error
+        return { status: 404, message: `No se encontraron marcas ni precios` };
+    } catch (error) {
+        const customError = new Error(`ObtenerPrecioYMarca() modelo ${error}`);
+        (customError as any).statusCode = 500;
+        throw customError;
+    } finally {
+        conn_MYSQL.release();
+    }
+};

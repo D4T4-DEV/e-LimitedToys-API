@@ -9,7 +9,7 @@ export interface DataCarrito {
 export const DataCarritoSchema = z.object({
     id_usuario: z.string(),
     id_producto: z.string(),
-    existencias: z.number()
+    existencias: z.string()
 });
 
 export const ParamsCarritoSchema = DataCarritoSchema.pick({

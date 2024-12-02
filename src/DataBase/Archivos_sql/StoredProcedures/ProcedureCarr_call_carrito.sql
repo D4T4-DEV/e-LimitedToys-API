@@ -16,7 +16,7 @@ BEGIN
 		SELECT -- hace los joins para mostrar la lista de los items en el carrito
 			c.id_producto,
             c.cantidad_seleccionada,
-			p.nombre AS nombre_producto,
+			p.nombre_producto AS nombre_producto,
 			p.descripcion AS descripcion_producto,
 			p.marca,
 			(SELECT ip.prod_img -- 
@@ -34,7 +34,7 @@ BEGIN
         WHERE -- se filtra que solo se muestren los items del id que se busco
 			c.id_usuario = idUsuario
         GROUP BY 
-            c.id_producto, c.cantidad_seleccionada, p.nombre, p.descripcion, p.marca, i.precio_producto, i.precio_envio, i.existencia;
+            c.id_producto, c.cantidad_seleccionada, p.nombre_producto, p.descripcion, p.marca, i.precio_producto, i.precio_envio, i.existencia;
 		SET mensaje = 'Carrito del usuario encontrado';
 	END IF;
 END //
@@ -43,7 +43,7 @@ DELIMITER ;
 
 /*
 CALL ObtenerCarrito(
-    4, -- id del usuario
+    6, -- id del usuario
     @mensaje -- mensaje a mostrar
 );
 SELECT @mensaje; -- seleccion al mensaje para que aparesca en mysql

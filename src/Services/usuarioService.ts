@@ -18,6 +18,14 @@ export const IniciarSesion = async (data: UserData): Promise<Respuesta> => {
     }
 }
 
+export const ChecarExistenciaEmail = async (data: UserData): Promise<Respuesta> => {
+    try {
+        return Models.ChecarExistenciaEmail(data);
+    } catch (err) {
+        throw err;
+    }
+}
+
 export const EditarDireccion = async (data: UserData): Promise<Respuesta> => {
     try {
         return Models.EditarDireccion(data);

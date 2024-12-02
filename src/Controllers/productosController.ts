@@ -65,21 +65,21 @@ export const EliminarProducto = async (req: Request, res: Response, next: NextFu
 */
 
 export const ObtenerProductos = async (req: Request, res: Response, next: NextFunction) => {
-    const resultValidateData = GetProductsForIndex.safeParse(req.params);
-    if (!resultValidateData.success) {
-        res.status(400).json({ status: 400, message: 'No se enviaron los datos necesarios para la operación' });
-        return;
-    }
-    const { indice } = req.params;
+    // const resultValidateData = GetProductsForIndex.safeParse(req.params);
+    // if (!resultValidateData.success) {
+    //     res.status(400).json({ status: 400, message: 'No se enviaron los datos necesarios para la operación' });
+    //     return;
+    // }
+    // const { indice } = req.params;
 
-    // Verificar si id_product es un numero
-    if (!Number.isFinite(Number(indice))) {
-        res.status(400).json({ status: 400, message: 'El indice de paginado debe ser un número válido' });
-        return;
-    }
+    // // Verificar si id_product es un numero
+    // if (!Number.isFinite(Number(indice))) {
+    //     res.status(400).json({ status: 400, message: 'El indice de paginado debe ser un número válido' });
+    //     return;
+    // }
 
     try {
-        const resultadoOperacion: Respuesta = await Servicios.ObtenerProductos(indice);
+        const resultadoOperacion: Respuesta = await Servicios.ObtenerProductos();
         res.status(resultadoOperacion.status).json(resultadoOperacion)
     } catch (error) {
         // Pasamos el error al middleware de errores
@@ -139,6 +139,16 @@ export const ObtenerProductosBuscador = async (req: Request, res: Response, next
 
     try {
         const resultadoOperacion: Respuesta = await Servicios.ObtenerProductosBuscador(indice, filter);
+        res.status(resultadoOperacion.status).json(resultadoOperacion)
+    } catch (error) {
+        // Pasamos el error al middleware de errores
+        next(error);
+    }
+}
+
+export const ObtenerMarcasYPrecios = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const resultadoOperacion: Respuesta = await Servicios.ObtenerMarcasYPrecios();
         res.status(resultadoOperacion.status).json(resultadoOperacion)
     } catch (error) {
         // Pasamos el error al middleware de errores

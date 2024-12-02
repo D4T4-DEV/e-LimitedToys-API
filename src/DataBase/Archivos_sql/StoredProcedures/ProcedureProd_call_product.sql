@@ -5,7 +5,7 @@ CREATE PROCEDURE ObtenerProductos(
 )
 BEGIN
     DECLARE pagina INT;
-    SET pagina = (lista - 1) * 15; -- este es el desplazamiento para que la segunda vez inicie en 15
+    -- SET pagina = (lista - 1) * 15; -- este es el desplazamiento para que la segunda vez inicie en 15
 
     SELECT 
         p.id_producto,
@@ -25,8 +25,8 @@ BEGIN
     WHERE 
         p.is_product_paused = FALSE -- se filtra los productos pausados (sin stock)
     GROUP BY 
-        p.id_producto, p.nombre_producto, p.descripcion, p.marca, i.precio_producto, i.precio_envio, i.existencia
-    LIMIT 15 OFFSET pagina;
+        p.id_producto, p.nombre_producto, p.descripcion, p.marca, i.precio_producto, i.precio_envio, i.existencia;
+    -- LIMIT 15 OFFSET pagina;
 
 END //
 
