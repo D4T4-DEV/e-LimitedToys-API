@@ -19,7 +19,7 @@ BEGIN
         Inventario i ON p.id_producto = i.id_producto
     WHERE 
         p.is_featured = TRUE -- Solo tomamos los productos destacados
-        AND i.existencia > 0 -- y solo tomamos productos con existencia
+        -- AND i.existencia > 0 -- y solo tomamos productos con existencia
     GROUP BY 
         p.id_producto, p.nombre_producto, p.descripcion, p.marca, i.precio_producto, i.precio_envio, i.existencia
     ORDER BY 
