@@ -10,7 +10,7 @@ if (!fs.existsSync(keysDir)) {
   fs.mkdirSync(keysDir, { recursive: true });
 }
 
-const tamanioClave_en_bits = 3072;
+const tamanioClave_en_bits = 9216;
 
 // Generar las claves y guardarlas en la carpeta KEYS
 crypto.generateKeyPair('rsa', {
