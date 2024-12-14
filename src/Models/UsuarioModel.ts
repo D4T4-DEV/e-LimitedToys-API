@@ -404,7 +404,7 @@ export const ObtenerImgUsuario = async (user_ID: string): Promise<string | undef
     const conn_MYSQL = await getConnectionMySQL();
 
     try {
-        const [result]: any[] = await conn_MYSQL.query(`SELECT prof_pic FROM usuarios WHERE id_usuario = ?`, [user_ID]);
+        const [result]: any[] = await conn_MYSQL.query(`SELECT prof_pic FROM Usuarios WHERE id_usuario = ?`, [user_ID]);
 
         // Verificamos si la respuesta no esta vacia y contenga el campo esperado
         if (result.length > 0 && result[0].prof_pic) {
