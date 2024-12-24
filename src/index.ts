@@ -53,5 +53,5 @@ API_APP.use(handleErrorMiddleware);
 // });
 
 
-// // Exporta el handler para Vercel
+// Exporta el handler para Vercel
 export default API_APP;
