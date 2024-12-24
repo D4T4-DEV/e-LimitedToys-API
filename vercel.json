@@ -3,7 +3,7 @@
   "rewrites": [
     {
       "source": "/(.*)",
-      "destination": "src/App_api.js"
+      "destination": "/src"
     }
   ]
 }
