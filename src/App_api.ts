@@ -43,14 +43,14 @@ API_APP.use(handleErrorMiddleware);
 
 
 // Implementacion desarrollo de dotenv para saber que hacer
-const PORT = PORT_SERVER || 3002;
+// const PORT = PORT_SERVER || 3002;
 // const URL_API = URL || 'localhost';
 // const PROTOCOL = TYPE_CONN || 'http';
 
 // Puesta en marcha del server 
-API_APP.listen(PORT, () => {
-    console.log(`Escuchando en ${PORT}`);
-});
+// API_APP.listen(PORT, () => {
+//     console.log(`Escuchando en ${PORT}`);
+// });
 
 
 // // Exporta el handler para Vercel

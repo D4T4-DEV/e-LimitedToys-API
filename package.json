@@ -1,12 +1,12 @@
 {
   "name": "e-limitedtoys-api",
   "version": "1.0.0",
-  "main": "index.js",
   "scripts": {
     "dev": "nodemon",
     "tsc": "tsc",
     "build": "tsc",
-    "start": "node ./build/App_api.js"
+    "start": "node ./build/App_api.js",
+    "vercel-build": "echo hello"
   },
   "keywords": [],
   "author": "",
