@@ -2,11 +2,11 @@ import { getConnectionMySQL } from "../DataBase/connector";
 import { DataProduct } from "../Interfaces/ProductoInterface";
 import { Respuesta } from "../Interfaces/ResponseInterface";
 
-const { PORT_SERVER, URL, TYPE_CONN, VERCEL_URL } = process.env;
+const { PORT_SERVER, URL, TYPE_CONN, VERCEL_URL, URL_VERCEL } = process.env;
 const PORT = PORT_SERVER || 3002;
 const URL_API = VERCEL_URL || URL || 'localhost';
 const PROTOCOL = TYPE_CONN || 'http';
-const URL_BASE = `${'https://' + VERCEL_URL}`;
+const URL_BASE =  URL_VERCEL || `${'https://' + VERCEL_URL}`;
 
 /*
     El codigo comentado aqui,son medios que posiblemente se van implementar
