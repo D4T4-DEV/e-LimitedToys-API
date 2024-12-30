@@ -22,14 +22,7 @@ const { PORT_SERVER, URL, DIR_UPLOAD, TYPE_CONN, ALLOWED_ORIGINS, IS_PRODUCTION 
 
 // Opciones de CORS
 const corsOptionsImgs: CorsOptions = {
-    origin: (origin, callback) => {
-        // Permitir cualquier origen en modo de desarrollo
-        if (IS_PRODUCTION === "false" || (origin && ALLOWED_ORIGINS?.includes(origin))) {
-            callback(null, true);
-        } else {
-            callback(new Error(`Acceso denegado de uso dado el origen ${origin}`));
-        }
-    },
+    origin: '*',
     methods: ['GET'],
     allowedHeaders: ['Authorization', 'Content-Type'],
     credentials: false
