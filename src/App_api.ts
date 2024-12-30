@@ -23,7 +23,7 @@ const { PORT_SERVER, URL, DIR_UPLOAD, TYPE_CONN, ALLOWED_ORIGINS, IS_PRODUCTION 
 // Opciones de CORS
 const corsOptionsImgs: CorsOptions = {
     origin: '*',
-    methods: ['GET'],
+    methods: ['GET', 'OPTIONS'],
     allowedHeaders: ['Authorization', 'Content-Type'],
     credentials: false
 };
