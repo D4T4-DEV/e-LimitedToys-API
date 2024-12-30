@@ -6,7 +6,7 @@ const { PORT_SERVER, URL, TYPE_CONN, VERCEL_URL } = process.env;
 const PORT = PORT_SERVER || 3002;
 const URL_API = VERCEL_URL || URL || 'localhost';
 const PROTOCOL = TYPE_CONN || 'http';
-const URL_BASE = `${VERCEL_URL}/` ? `${PROTOCOL}://${URL_API}` : `${PROTOCOL}://${URL_API}:${PORT}`;
+const URL_BASE = `${VERCEL_URL}` ? `${PROTOCOL}://${URL_API}` : `${PROTOCOL}://${URL_API}:${PORT}`;
 
 /*
     El codigo comentado aqui,son medios que posiblemente se van implementar
@@ -110,7 +110,7 @@ export const ObtenerProductos = async (/*indice_catalogo: string*/): Promise<Res
                 // Division de `imagenes_producto` y agregacion de URL base a cada una
                 const imagenesConURL = imagenes_producto!
                     .split(",") // Separamos por comas
-                    .map((img: string) => `${URL_BASE}${img.trim().replace(/\\/g, '/')}`) // concatenacion y eliminamos espacios en blanco
+                    .map((img: string) => `${URL_BASE}/${img.trim().replace(/\\/g, '/')}`) // concatenacion y eliminamos espacios en blanco
 
                 return {
                     id_producto,
@@ -154,7 +154,7 @@ export const ObtenerProductosDestacados = async (): Promise<Respuesta> => {
                 // Division de `imagenes_producto` y agregacion de URL base a cada una
                 const imagenesConURL = imagenes_producto!
                     .split(",") // Separamos por comas
-                    .map((img: string) => `${URL_BASE}${img.trim().replace(/\\/g, '/')}`) // concatenacion y eliminamos espacios en blanco
+                    .map((img: string) => `${URL_BASE}/${img.trim().replace(/\\/g, '/')}`) // concatenacion y eliminamos espacios en blanco
 
                 return {
                     id_producto,
@@ -197,7 +197,7 @@ export const ObtenerProductoID = async (id_producto: string): Promise<Respuesta>
                 // Division de `imagenes_producto` y agregacion de URL base a cada una
                 const imagenesConURL = imagenes_producto!
                     .split(",") // separamos por comas
-                    .map((img: string) => `${URL_BASE}${img.trim().replace(/\\/g, '/')}`) // concatenacion y eliminamos espacios en blanco
+                    .map((img: string) => `${URL_BASE}/${img.trim().replace(/\\/g, '/')}`) // concatenacion y eliminamos espacios en blanco
 
                 return {
                     id_producto,
@@ -240,7 +240,7 @@ export const ObtenerProductosBuscador = async (lista: string, filter: string): P
                 // Division de `imagenes_producto` y agregacion de URL base a cada una
                 const imagenesConURL = imagenes_producto!
                     .split(",") // separamos por comas
-                    .map((img: string) => `${URL_BASE}${img.trim().replace(/\\/g, '/')}`) // concatenacion y eliminamos espacios en blanco
+                    .map((img: string) => `${URL_BASE}/${img.trim().replace(/\\/g, '/')}`) // concatenacion y eliminamos espacios en blanco
 
                 return {
                     id_producto,
