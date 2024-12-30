@@ -6,7 +6,7 @@ const { PORT_SERVER, URL, TYPE_CONN, VERCEL_URL } = process.env;
 const PORT = PORT_SERVER || 3002;
 const URL_API = VERCEL_URL || URL || 'localhost';
 const PROTOCOL = TYPE_CONN || 'http';
-const URL_BASE = `${VERCEL_URL}/` ? `${PROTOCOL}://${URL_API}` : `${PROTOCOL}://${URL_API}:${PORT}`;
+const URL_BASE = `${VERCEL_URL}` ? `${PROTOCOL}://${URL_API}` : `${PROTOCOL}://${URL_API}:${PORT}`;
 
 export const AniadirProductoCarrito = async (data: DataCarrito): Promise<Respuesta> => {
 
@@ -125,7 +125,7 @@ export const ObtenerCarrito = async (userID: string): Promise<Respuesta> => {
 
             const datosCarritoProcesado = datosCarrito.map((producto: any) => ({
                 ...producto,
-                imagen_producto: `${URL_BASE}${producto.imagen_producto.replace(/\\/g, "/")}`,
+                imagen_producto: `${URL_BASE}/${producto.imagen_producto.replace(/\\/g, "/")}`,
                 total_a_pagar: `${Number(producto.precio_producto) * Number(producto.cantidad_seleccionada) + Number(producto.precio_envio)}`,
             }));
 

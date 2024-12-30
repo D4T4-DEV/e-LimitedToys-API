@@ -133,7 +133,7 @@ dist
 build/
 
 # Carpeta de imagenes 
-uploads/Private
+# uploads/Private
 
 # Carpeta de keys
 Keys/
