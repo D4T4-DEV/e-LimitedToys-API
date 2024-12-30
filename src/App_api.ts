@@ -17,14 +17,21 @@ import { checkFileAccessMiddlware } from './Middlewares/Check_files_public';
 const API_APP = express();
 
 // Toma de las variables del archivo env (desestructuracion)
-const { PORT_SERVER, URL, DIR_UPLOAD, TYPE_CONN } = process.env;
+const { PORT_SERVER, URL, DIR_UPLOAD, TYPE_CONN, ALLOWED_ORIGINS, IS_PRODUCTION } = process.env;
 
 
 // Opciones de CORS
 const corsOptionsImgs: CorsOptions = {
-    origin: '*',
+    origin: (origin, callback) => {
+        // Permitir cualquier origen en modo de desarrollo
+        if (IS_PRODUCTION === "false" || (origin && ALLOWED_ORIGINS?.includes(origin))) {
+            callback(null, true);
+        } else {
+            callback(new Error(`Acceso denegado de uso dado el origen ${origin}`));
+        }
+    },
     methods: ['GET'],
-    allowedHeaders: ['Authorization'],
+    allowedHeaders: ['Authorization', 'Content-Type'],
     credentials: false
 };
 
