@@ -6,7 +6,7 @@ const { PORT_SERVER, URL, TYPE_CONN, VERCEL_URL } = process.env;
 const PORT = PORT_SERVER || 3002;
 const URL_API = VERCEL_URL || URL || 'localhost';
 const PROTOCOL = TYPE_CONN || 'http';
-const baseURL = VERCEL_URL ? `${PROTOCOL}://${URL_API}` : `${PROTOCOL}://${URL_API}:${PORT}`;
+const baseURL = `${VERCEL_URL}/` ? `${PROTOCOL}://${URL_API}` : `${PROTOCOL}://${URL_API}:${PORT}`;
 
 interface Banner extends RowDataPacket {
     id_banner: number;
