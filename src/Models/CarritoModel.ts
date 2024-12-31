@@ -90,7 +90,7 @@ export const EliminarProductoCarrito = async (data: DataCarrito): Promise<Respue
 
     try {
 
-        const [result]: any[] = await conn_MYSQL.query(`DELETE FROM carrito WHERE (id_usuario = ? AND id_producto = ?);`, 
+        const [result]: any[] = await conn_MYSQL.query(`DELETE FROM Carrito WHERE (id_usuario = ? AND id_producto = ?);`, 
             [id_usuario, id_producto]);
 
         if (result.affectedRows > 0) {
