@@ -57,7 +57,7 @@ export const EditarProductoCarrito = async (data: DataCarrito): Promise<Respuest
     try {
 
         const [result]: any[] = await conn_MYSQL.query(`CALL Agregar_modificar_carrito(?, ?, ?, @mensaje)`,
-            [id_usuario, id_producto, (existencias! < 0 ? 0 : existencias)]);
+            [id_usuario, id_producto, existencias]);
 
         const [mensajeResult]: any[] = await conn_MYSQL.query(`SELECT @mensaje AS mensaje;`);
 
