@@ -6,7 +6,7 @@ const { RSA_PRIVATE_KEY } = process.env;
 
 const options: SignOptions = {
     algorithm: 'RS256',
-    expiresIn: '1h', // Tiempo de expiracion
+    expiresIn: '6h', // Tiempo de expiracion
 }
 
 export const GenerarToken = (payload: JsonData): string => {
